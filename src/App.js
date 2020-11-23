@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 
 // pages
 import Home from './pages/Home';
@@ -14,8 +14,8 @@ import NavExample from './components/NavExample';
 
 export default function App() {
   return (
-    // tudo deve ir dentro de BrowserRouter (eu acho)
-    <BrowserRouter>
+    // tudo deve ir dentro de HashRouter (eu acho)
+    <HashRouter basename="/">
       <NavExample />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -26,6 +26,6 @@ export default function App() {
         <Route path="*" element={<h1>404 — Página não encontrada</h1>} />
       </Routes>
       {/* <DatabaseExample /> */}
-    </BrowserRouter>
+    </HashRouter>
   );
 }
