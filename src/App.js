@@ -1,33 +1,31 @@
 import React from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { createTest, readTest } from './services/firestore';
+// pages
+import Home from './pages/Home';
+import Imovel from './pages/Imovel';
+import AdmHome from './pages/admin/AdmHome';
+import AdmImovel from './pages/admin/AdmImovel';
+import AdmReservas from './pages/admin/AdmReservas';
+
+// examples
+import NavExample from './components/NavExample';
+// import DatabaseExample from "./components/DatabaseExample"
 
 export default function App() {
-  const [test, setTest] = React.useState(null)
-
-  React.useEffect(() => {
-    createTest({
-      name: "nome aqui 5",
-      idade: 53
-    })
-  }, [])
-
-  React.useEffect(() => {
-    readTest().then(res => setTest(res))
-  }, [])
-
   return (
-    <div>
-      Teste database
-      {test ? <ul>
-          ul
-          {test.map((item, i) => {
-            return <li key={i}>li: {item.randomNumber}</li>
-          })}
-        </ul>
-        :
-        <p>Carregando</p>
-      }
-    </div>
+    // tudo deve ir dentro de BrowserRouter (eu acho)
+    <BrowserRouter>
+      <NavExample />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="imovel/*" element={<Imovel />} />
+        <Route path="admin" element={<AdmHome />} />
+        <Route path="admin/reservas" element={<AdmReservas />} />
+        <Route path="admin/imovel/*" element={<AdmImovel />} />
+        <Route path="*" element={<h1>404 — Página não encontrada</h1>} />
+      </Routes>
+      {/* <DatabaseExample /> */}
+    </BrowserRouter>
   );
 }
