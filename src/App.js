@@ -1,22 +1,19 @@
 import React from 'react'
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom'
 
 // pages
-import Home from './pages/Home';
-import Imovel from './pages/Imovel';
-import AdmHome from './pages/admin/AdmHome';
-import AdmImovel from './pages/admin/AdmImovel';
-import AdmReservas from './pages/admin/AdmReservas';
+import Home from './pages/Home'
+import Imovel from './pages/Imovel'
+import AdmHome from './pages/admin/AdmHome'
+import AdmImovel from './pages/admin/AdmImovel'
+import AdmReservas from './pages/admin/AdmReservas'
 
-// examples
-import NavExample from './components/NavExample';
 // import DatabaseExample from "./components/DatabaseExample"
 
 export default function App() {
   return (
     // tudo deve ir dentro de HashRouter (eu acho)
     <HashRouter basename="/">
-      <NavExample />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="imovel/*" element={<Imovel />} />
@@ -27,5 +24,5 @@ export default function App() {
       </Routes>
       {/* <DatabaseExample /> */}
     </HashRouter>
-  );
+  )
 }
