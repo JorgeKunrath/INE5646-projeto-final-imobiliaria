@@ -1,9 +1,11 @@
 import React from 'react'
+import NavExample from '../components/NavExample'
 
 export default function Imovel() {
   return (
     <div>
-      <h1>estou no imóvel</h1>
+      <NavExample />
+      <h1>estou no imóvel do front</h1>
     </div>
   )
 }
