@@ -1,23 +1,41 @@
 import React from 'react'
+import { useContext } from 'react'
+import { AuthContext } from '../../components/AuthProvider'
+import firebase from 'firebase/app'
+import 'firebase/auth'
+
 import NavExample from '../../components/NavExample'
 import Admin from './Admin'
 
 export default function AdmLogin() {
-  // maybe use useMemo or some other way to store this info
-  const [loggedIn, setLoggedIn] = React.useState(false)
+  const { currentUser } = useContext(AuthContext)
+
+  const signInWithGoogle = () => {
+    const provider = new firebase.auth.GoogleAuthProvider()
+    firebase.auth().signInWithPopup(provider)
+  }
+
+  function SignOut() {
+    return (
+      currentUser && (
+        <button onClick={() => firebase.auth().signOut()}>Sign Out</button>
+      )
+    )
+  }
 
   return (
     <div>
       <NavExample />
-      {loggedIn ? (
+      <header>header</header>
+      {currentUser ? (
         <>
-          <Admin userData={loggedIn} />
-          <button onClick={() => setLoggedIn(false)}>Deslogar</button>
+          <Admin userData={currentUser} />
+          <SignOut />
         </>
       ) : (
         <>
-          <p>Tela de loggin aqui</p>
-          <button onClick={() => setLoggedIn(true)}>Logar</button>
+          <p>Faça login para acessar esta parte da aplicação</p>
+          <button onClick={signInWithGoogle}>Acessar com o Google</button>
         </>
       )}
     </div>

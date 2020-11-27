@@ -1,31 +1,32 @@
 import React from 'react'
 
-import { createTest, readTest } from '../services/firestore';
+import { createTest, readTest } from '../services/firestore'
 
 export default function DatabaseExample() {
   const [test, setTest] = React.useState(null)
 
   React.useEffect(() => {
     createTest({
-      name: "nome aqui 5",
-      idade: 53
+      name: 'nome aqui 5',
+      idade: 53,
     })
   }, [])
 
   React.useEffect(() => {
-    readTest().then(res => setTest(res))
+    readTest().then((res) => setTest(res))
   }, [])
 
   return (
     <div>
-      {test ? <ul>
-        {test.map((item, i) => {
-          return <li key={i}>li: {item.randomNumber}</li>
-        })}
+      {test ? (
+        <ul>
+          {test.map((item, i) => {
+            return <li key={i}>li: {item.randomNumber}</li>
+          })}
         </ul>
-        :
+      ) : (
         <p>Carregando</p>
-      }
+      )}
     </div>
-  );
+  )
 }
