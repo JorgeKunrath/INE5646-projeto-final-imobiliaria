@@ -1,22 +1,23 @@
 import React from 'react'
 import { useContext } from 'react'
 import { AuthContext } from '../../components/AuthProvider'
-
-import NavExample from '../../components/NavExample'
-import Login from '../Login'
-import Admin from './Admin'
-
-// login stuff
 import firebase from 'firebase/app'
 import 'firebase/auth'
 
+import NavExample from '../../components/NavExample'
+import Admin from './Admin'
+
 export default function AdmLogin() {
-  // maybe use useMemo or some other way to store this info
   const { currentUser } = useContext(AuthContext)
+
+  const signInWithGoogle = () => {
+    const provider = new firebase.auth.GoogleAuthProvider()
+    firebase.auth().signInWithPopup(provider)
+  }
 
   function SignOut() {
     return (
-      firebase.auth().currentUser && (
+      currentUser && (
         <button onClick={() => firebase.auth().signOut()}>Sign Out</button>
       )
     )
@@ -25,13 +26,17 @@ export default function AdmLogin() {
   return (
     <div>
       <NavExample />
+      <header>header</header>
       {currentUser ? (
         <>
           <Admin userData={currentUser} />
           <SignOut />
         </>
       ) : (
-        <Login />
+        <>
+          <p>Faça login para acessar esta parte da aplicação</p>
+          <button onClick={signInWithGoogle}>Acessar com o Google</button>
+        </>
       )}
     </div>
   )
