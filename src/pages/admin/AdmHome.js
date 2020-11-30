@@ -1,11 +1,15 @@
 import React from 'react'
-import AdmNavExample from '../../components/AdmNavExample'
+
+import HeaderAdmin from '../../components/common/HeaderAdmin'
+import Footer from '../../components/common/Footer'
 
 export default function AdmHome() {
   return (
-    <div>
-      <AdmNavExample />
+    <>
+      <HeaderAdmin />
       <h1>Admin - home</h1>
-    </div>
+
+      <Footer />
+    </>
   )
 }

@@ -86,7 +86,7 @@ export default function Houses(props) {
       {props.data ? (
         props.data.map((data) => (
           <HouseCard key={`HouseCard-${data.codigo}`}>
-            <Link to={`imovel/codigo/${data.codigo}`}>
+            <Link to={`imovel/cod-${data.codigo}`}>
               <Picture>
                 <img src={data.imagem} alt="" />
               </Picture>

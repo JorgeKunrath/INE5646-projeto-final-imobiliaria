@@ -1,13 +1,17 @@
 import React from 'react'
-import AdmNavExample from '../../components/AdmNavExample'
+
+import HeaderAdmin from '../../components/common/HeaderAdmin'
+import Footer from '../../components/common/Footer'
 
 export default function AdmImovel() {
   return (
-    <div>
-      <AdmNavExample />
+    <>
+      <HeaderAdmin />
       <h1>
         Admin - imovel (criação e edição, por enquanto, e talvez pra sempre)
       </h1>
-    </div>
+
+      <Footer />
+    </>
   )
 }

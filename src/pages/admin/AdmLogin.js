@@ -1,11 +1,11 @@
 import React from 'react'
-import { useContext } from 'react'
-import { AuthContext } from '../../components/AuthProvider'
+
 import firebase from 'firebase/app'
 import 'firebase/auth'
+import { useContext } from 'react'
+import { AuthContext } from '../../components/AuthProvider'
 
-import NavExample from '../../components/NavExample'
-import Admin from './Admin'
+import AdminRoutes from './AdminRoutes'
 
 export default function AdmLogin() {
   const { currentUser } = useContext(AuthContext)
@@ -18,18 +18,18 @@ export default function AdmLogin() {
   function SignOut() {
     return (
       currentUser && (
-        <button onClick={() => firebase.auth().signOut()}>Sign Out</button>
+        <button onClick={() => firebase.auth().signOut()}>
+          Sign Out (mover para User)
+        </button>
       )
     )
   }
 
   return (
-    <div>
-      <NavExample />
-      <header>header</header>
+    <>
       {currentUser ? (
         <>
-          <Admin userData={currentUser} />
+          <AdminRoutes />
           <SignOut />
         </>
       ) : (
@@ -38,6 +38,6 @@ export default function AdmLogin() {
           <button onClick={signInWithGoogle}>Acessar com o Google</button>
         </>
       )}
-    </div>
+    </>
   )
 }

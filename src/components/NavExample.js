@@ -9,7 +9,6 @@ export default function NavExample() {
       <Link to="/imovel/codigo">Imovel</Link>
       {' | '}
       <Link to="/admin">Admin</Link>
-      {' | '}
     </nav>
   )
 }

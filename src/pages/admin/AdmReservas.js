@@ -1,11 +1,15 @@
 import React from 'react'
-import AdmNavExample from '../../components/AdmNavExample'
+
+import HeaderAdmin from '../../components/common/HeaderAdmin'
+import Footer from '../../components/common/Footer'
 
 export default function AdmReservas() {
   return (
-    <div>
-      <AdmNavExample />
+    <>
+      <HeaderAdmin />
       <h1>Admin - reservas</h1>
-    </div>
+
+      <Footer />
+    </>
   )
 }

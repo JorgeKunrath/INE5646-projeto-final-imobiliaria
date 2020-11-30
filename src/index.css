@@ -1,3 +1,13 @@
+/* Global CSS Custom Properties (aka. variables) */
+html {
+  --green: #27ae60;
+  --orange: #f2994a;
+  --black: #333333;
+
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 0 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Tipography */
 html {
   font-size: clamp(16px, 1.6vw, 18px);
   font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
@@ -6,6 +16,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Resets */
 *,
 *::before,
 *::after {
