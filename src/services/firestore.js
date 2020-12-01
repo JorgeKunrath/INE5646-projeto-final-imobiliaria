@@ -32,3 +32,18 @@ export const readTest = async () => {
   const data = snapshot.docs.map((doc) => doc.data())
   return data
 }
+
+// ==============
+/* real things */
+
+// create a new record in firestore
+// another function, or changes in this one, is needed to edit fields
+export const submitImovel = (object) => {
+  db.collection('imovel')
+    .add({
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      ...object,
+    })
+    .then(() => console.log('submitImovel: send to "imovel" collection'))
+  return null
+}
