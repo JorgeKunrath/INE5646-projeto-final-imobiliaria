@@ -47,3 +47,13 @@ export const submitImovel = (object) => {
     .then(() => console.log('submitImovel: send to "imovel" collection'))
   return null
 }
+
+export const submitImovelPrivate = (object) => {
+  db.collection('imovelPrivate')
+    .add({
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      ...object,
+    })
+    .then(() => console.log('submitImovel: send to "imovelPrivate" collection'))
+  return null
+}

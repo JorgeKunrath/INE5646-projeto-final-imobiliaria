@@ -6,6 +6,18 @@ import { submitImovel } from '../services/firestore'
 import { useContext } from 'react'
 import { AuthContext } from './AuthProvider'
 
+/*
+contador para o cod do imóvel:
+- ter um doc no firestore pra manter a contagem (mesma coleção)
+- antes de submeter o form:
+  - batch: ler a contagem, aumentar 1
+- adicionar a contagem no objeto do form
+- submeter
+(se possível fazer tudo isso num batch só, mas acho q não é possível não — só com algum cloud function, mas n tem necessidade)
+https://fireship.io/snippets/firestore-increment-tips/
+outra alternativa: https://firebase.google.com/docs/firestore/extend-with-functions
+*/
+
 const Form = styled.form`
   display: flex;
   flex-flow: column;
@@ -22,8 +34,15 @@ const Form = styled.form`
   }
 `
 
-export default function AdmFormExample({ dbData }) {
+export default function AdmFormExample() {
   const { currentUser } = useContext(AuthContext)
+
+  const dbData = {
+    titulo: 'placeholder titulo mas n exatamente',
+    inscricaoMunicipal: 'inscricao q ja veio do banco de dados',
+    aluguel: 123,
+    codigoProvisorio: 321,
+  }
 
   const { register, handleSubmit, errors } = useForm({
     defaultValues: dbData,
