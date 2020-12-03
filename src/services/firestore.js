@@ -36,24 +36,29 @@ export const readTest = async () => {
 // ==============
 /* real things */
 
-// create a new record in firestore
-// another function, or changes in this one, is needed to edit fields
-export const submitImovel = (object) => {
-  db.collection('imovel')
-    .add({
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      ...object,
-    })
-    .then(() => console.log('submitImovel: send to "imovel" collection'))
-  return null
-}
+// TODO: don't have a way to update yet, just create
+export const submitImovel = (dataPublic, dataPrivate) => {
+  // Get a new write batch
+  let batch = db.batch()
 
-export const submitImovelPrivate = (object) => {
-  db.collection('imovelPrivate')
-    .add({
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      ...object,
-    })
-    .then(() => console.log('submitImovel: send to "imovelPrivate" collection'))
+  // Set the value in imovel
+  let imovelRef = db.collection('imovel').doc()
+  batch.set(imovelRef, {
+    ...dataPublic,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+  })
+
+  // Set the value in imovel private
+  let imovelPrivateRef = db.collection('imovelPrivate').doc()
+  batch.set(imovelPrivateRef, {
+    ...dataPrivate,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+  })
+
+  // Commit the batch
+  batch.commit().then(function () {
+    console.log('submitImovel: imovel and imovelPrivate submited')
+  })
+
   return null
 }

@@ -20,9 +20,28 @@ https://fireship.io/snippets/firestore-increment-tips/
 outra alternativa: https://firebase.google.com/docs/firestore/extend-with-functions
 */
 
+/*
+
+
+
+
+TODO
+
+- adicionar demais campos
+- layoutar
+- adicionar validação de autenticação
+- suporte para upload de imagem
+
+em algum momento melhorar o código
+
+
+
+*/
+
 const Form = styled.form`
   display: flex;
-  flex-flow: column;
+  flex-wrap: wrap;
+  position: relative;
   margin: 2em 0;
 
   label {
@@ -32,13 +51,31 @@ const Form = styled.form`
     color: #828282;
     min-width: 0;
   }
+
+  hr {
+    margin-bottom: 1em;
+    border: none;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .price {
+    position: relative;
+
+    input {
+      padding-left: 2em;
+    }
+
+    ::before {
+      content: 'R$ ';
+      position: absolute;
+      bottom: calc(0.5em + 2px);
+      left: 0.75em;
+      width: 0;
+    }
+  }
 `
 
-const Fieldset = styled.fieldset`
-  min-width: 0;
-  border: none;
-  margin: 0;
-
+const Fieldset = styled.div`
   display: grid;
   grid-template-columns: ${({ inputCount }) => `repeat(${inputCount}, 1fr)`};
   grid-gap: 1em;
@@ -59,16 +96,24 @@ const InputStyled = styled.input`
     props.error ? '1px solid #eb5757' : '1px solid #e0e0e0'};
   box-shadow: ${(props) =>
     props.error ? 'inset 0 0 0 1px #eb5757' : 'inset 0 0 0 0 transparent'};
-  transition: all 0.2s ease;
+  transition: box-shadow 0.2s ease, border 0.2s ease;
 
   :focus {
     outline: none;
   }
+
+  &.textarea {
+    resize: vertical;
+  }
 `
 
 const Button = styled.button`
+  position: absolute;
+  top: -4em;
+  right: 0;
+
   display: block;
-  padding: 0.5em;
+  padding: 0.5em 0.75em;
   background-color: #219653;
   color: white;
   border: none;
@@ -77,8 +122,48 @@ const Button = styled.button`
   cursor: pointer;
 `
 
+const LeftCol = styled.div`
+  width: 60%;
+`
+
+const RigthCol = styled.div`
+  width: 40%;
+  padding-left: 2rem;
+`
+
 export default function AdmFormImovel() {
-  const defaultValues = {}
+  const defaultValues = {
+    cod: '0000',
+    titulo: 'titulo default',
+    inscricaoMunicipal: '0004.5.2.455.255',
+
+    dormitorios: 5,
+    banheiros: 3,
+    vagas: 0,
+    area: 454,
+
+    aluguel: 1400.5,
+    status: 'reservado',
+
+    cep: '88000-100',
+    estado: 'Santa Catarina',
+    cidade: 'Florianópolis',
+    bairro: 'Centro',
+    rua: 'Rua Fulano de Tal',
+    tipo: 'casa',
+    numero: '01',
+    complemento: '402',
+
+    descricao:
+      'descrição do imóvel aidosjaoiwjaiosdfji oaejsfio asjdfio ajsfio jasoidfh aisufh iuasdfhj iuashf iuasjdfiu ahsfiuashdfiu ahsfiu ajsdfiu ajweifu hasdfiu hasg hasdfiu jasgiu jhasdfio hasegio hasdiofj asih iaospdfh aioseh iaosdfh aisoeth iuasdfj aisueth aisudfhasu eikfn aslkdjfn alskjnsalkdfh asieofh asgh pasdfih aphsfipuv ihyahsudkf nasiruog nasuich napriusg bnsaupicn parytbn asuinc uaipsrh uasgh uapsfh puiashrg ipuashf iuasf',
+
+    proprietario: 'fulano de tal',
+    proprietarioTel: '(45) 888888 88888',
+    proprietarioEmail: 'fulano@detal.com',
+    anotacoes:
+      'asdfj aoisdfj ioajwesgio asjdfio ajsiogd jaosidfj aisoefj oa;sidfj ;aisjgoia;sjf oi;asdjgf ioasdjfio ajsoign aiosdfn oaisdfoij',
+  }
+
   const { currentUser } = useContext(AuthContext)
 
   const { register, handleSubmit, errors } = useForm({ defaultValues })
@@ -95,19 +180,36 @@ export default function AdmFormImovel() {
     const {
       titulo,
       inscricaoMunicipal,
+      status,
+
       dormitorios,
       banheiros,
       vagas,
       area,
+
       aluguel,
+
+      cep,
+      estado,
+      cidade,
+      bairro,
+      rua,
+      tipo,
+      numero,
+      complemento,
+
+      descricao,
+
       proprietario,
       proprietarioTel,
       proprietarioEmail,
       anotacoes,
+      // imagens,
     } = data
 
     const databaseSchema = {
       cod: fakeCod,
+      status,
       titulo,
       inscricaoMunicipal,
       detalhes: {
@@ -116,7 +218,19 @@ export default function AdmFormImovel() {
         vagas,
         area,
       },
-      custos: { aluguel },
+      aluguel,
+      endereco: {
+        cep,
+        estado,
+        cidade,
+        bairro,
+        rua,
+        tipo,
+        numero,
+        complemento,
+      },
+      descricao,
+      // imagens: [imagens],
     }
 
     const databasePrivateSchema = {
@@ -127,131 +241,280 @@ export default function AdmFormImovel() {
         proprietarioEmail,
       },
       anotacoes,
+      // token de autenticação
     }
 
     console.log({ databaseSchema })
+    console.log({ databasePrivateSchema })
 
-    // request firestore
-    submitImovel(databaseSchema)
-    submitImovelPrivate(databasePrivateSchema)
+    // send data to firestore
+    submitImovel(databaseSchema, databasePrivateSchema)
   }
 
   console.log({ errors })
 
   return (
-    <SiteContainer style={{ maxWidth: 800 }}>
+    <SiteContainer>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <label>
-          Título
-          <InputStyled
-            type="text"
-            name="titulo"
-            ref={register({ required: true })}
-            error={errors.titulo}
-          />
-        </label>
-
-        <label>
-          Inscrição Municipal
-          <InputStyled
-            type="text"
-            name="inscricaoMunicipal"
-            ref={register({ required: true })}
-            error={errors.inscricaoMunicipal}
-          />
-        </label>
-
-        <Fieldset inputCount={4}>
+        <LeftCol>
           <label>
-            Dormitórios
-            <InputStyled
-              type="number"
-              name="dormitorios"
-              ref={register({ required: true })}
-              error={errors.dormitorios}
-            />
-          </label>
-          <label>
-            Banheiros
-            <InputStyled
-              type="number"
-              name="banheiros"
-              ref={register({ required: true })}
-              error={errors.banheiros}
-            />
-          </label>
-          <label>
-            Vagas
-            <InputStyled
-              type="number"
-              name="vagas"
-              ref={register({ required: true })}
-              error={errors.vagas}
-            />
-          </label>
-          <label>
-            Área (m²)
+            Título
             <InputStyled
               type="text"
-              name="area"
+              name="titulo"
               ref={register({ required: true })}
-              error={errors.area}
+              error={errors.titulo}
             />
           </label>
-        </Fieldset>
 
-        <label>
-          Aluguel
-          <InputStyled
-            type="number"
-            step=".01"
-            name="aluguel"
-            ref={register({ required: true })}
-            error={errors.aluguel}
-          />
-        </label>
+          <label>
+            Inscrição Municipal
+            <InputStyled
+              type="text"
+              name="inscricaoMunicipal"
+              ref={register({ required: true })}
+              error={errors.inscricaoMunicipal}
+            />
+          </label>
 
-        <hr style={{ width: '100%' }} />
+          <Fieldset inputCount={4}>
+            <label>
+              Dormitórios
+              <InputStyled
+                type="number"
+                name="dormitorios"
+                ref={register({ required: true })}
+                error={errors.dormitorios}
+              />
+            </label>
+            <label>
+              Banheiros
+              <InputStyled
+                type="number"
+                name="banheiros"
+                ref={register({ required: true })}
+                error={errors.banheiros}
+              />
+            </label>
+            <label>
+              Vagas
+              <InputStyled
+                type="number"
+                name="vagas"
+                ref={register({ required: true })}
+                error={errors.vagas}
+              />
+            </label>
+            <label>
+              <span>
+                Área <small>m²</small>
+              </span>
+              <InputStyled
+                type="number"
+                name="area"
+                ref={register({ required: true })}
+                error={errors.area}
+              />
+            </label>
+          </Fieldset>
 
-        <label>
-          Proprietário
-          <InputStyled
-            type="text"
-            name="proprietario"
-            ref={register({ required: true })}
-            error={errors.proprietario}
-          />
-        </label>
+          <Fieldset inputCount={2}>
+            <label className="price">
+              Aluguel
+              <InputStyled
+                type="number"
+                step=".01"
+                name="aluguel"
+                ref={register({ required: true })}
+                error={errors.aluguel}
+              />
+            </label>
 
-        <label>
-          Telefone Proprietário
-          <InputStyled
-            type="tel"
-            name="proprietarioTel"
-            ref={register({ required: true })}
-            error={errors.proprietarioTel}
-          />
-        </label>
-        <label>
-          Email Proprietário
-          <InputStyled
-            type="email"
-            name="proprietarioEmail"
-            ref={register({ required: true })}
-            error={errors.proprietarioEmail}
-          />
-        </label>
-        <label>
-          Anotações
-          <InputStyled
-            type="textarea"
-            name="anotacoes"
-            ref={register({ required: true })}
-            error={errors.anotacoes}
-          />
-        </label>
+            <label>
+              Status
+              <InputStyled
+                as="select"
+                name="status"
+                ref={register({ required: true })}
+                error={errors.status}
+              >
+                <option value="disponivel">Disponível</option>
+                <option value="reservado">Reservado</option>
+                <option value="alugado">Alugado</option>
+                <option value="indisponivel">Indisponível</option>
+              </InputStyled>
+            </label>
+          </Fieldset>
 
-        <Button type="submit">Salvar</Button>
+          <hr style={{ width: '100%' }} />
+
+          <Fieldset inputCount={3}>
+            <label>
+              <span>
+                CEP{' '}
+                <small style={{ color: 'lightcoral' }}>
+                  implementar busca cep
+                </small>
+              </span>
+              <InputStyled
+                type="string"
+                name="cep"
+                ref={register({ required: true })}
+                error={errors.cep}
+              />
+            </label>
+          </Fieldset>
+
+          <Fieldset inputCount={3}>
+            <label>
+              Estado
+              <InputStyled
+                type="text"
+                name="estado"
+                ref={register({ required: true })}
+                error={errors.estado}
+              />
+            </label>
+            <label>
+              Cidade
+              <InputStyled
+                type="text"
+                name="cidade"
+                ref={register({ required: true })}
+                error={errors.cidade}
+              />
+            </label>
+            <label>
+              Bairro
+              <InputStyled
+                type="text"
+                name="bairro"
+                ref={register({ required: true })}
+                error={errors.bairro}
+              />
+            </label>
+          </Fieldset>
+
+          <label>
+            Rua
+            <InputStyled
+              type="text"
+              name="rua"
+              ref={register({ required: true })}
+              error={errors.rua}
+            />
+          </label>
+
+          <Fieldset inputCount={3}>
+            <label>
+              Tipo
+              <InputStyled
+                as="select"
+                name="tipo"
+                ref={register({ required: true })}
+                error={errors.tipo}
+              >
+                <option value="casa">Casa</option>
+                <option value="apartamento">Apartamento</option>
+              </InputStyled>
+            </label>
+            <label>
+              Número
+              <InputStyled
+                type="text"
+                name="numero"
+                ref={register({ required: true })}
+                error={errors.numero}
+              />
+            </label>
+            <label>
+              Complemento
+              <InputStyled
+                type="text"
+                name="complemento"
+                ref={register({ required: true })}
+                error={errors.complemento}
+              />
+            </label>
+          </Fieldset>
+
+          <hr style={{ width: '100%' }} />
+
+          <label>
+            Descrição
+            <InputStyled
+              as="textarea"
+              rows="12"
+              cols="99999999"
+              wrap="hard"
+              className="textarea"
+              name="descricao"
+              ref={register({ required: true })}
+              error={errors.descricao}
+            />
+          </label>
+
+          <hr style={{ width: '100%' }} />
+
+          <label>
+            Proprietário
+            <InputStyled
+              type="text"
+              name="proprietario"
+              ref={register({ required: true })}
+              error={errors.proprietario}
+            />
+          </label>
+
+          <label>
+            Telefone Proprietário
+            <InputStyled
+              type="tel"
+              name="proprietarioTel"
+              ref={register({ required: true })}
+              error={errors.proprietarioTel}
+            />
+          </label>
+          <label>
+            Email Proprietário
+            <InputStyled
+              type="email"
+              name="proprietarioEmail"
+              ref={register({ required: true })}
+              error={errors.proprietarioEmail}
+            />
+          </label>
+          <label>
+            Anotações
+            <InputStyled
+              as="textarea"
+              rows="6"
+              className="textarea"
+              name="anotacoes"
+              ref={register()}
+              error={errors.anotacoes}
+            />
+          </label>
+
+          <Button type="submit">Salvar</Button>
+        </LeftCol>
+
+        <RigthCol>
+          <label>
+            <span>
+              Imagens <small style={{ color: 'lightcoral' }}>implementar</small>
+            </span>
+
+            <InputStyled
+              rows="6"
+              type="file"
+              name="imagens"
+              multiple
+              ref={register()}
+              error={errors.imagens}
+            />
+          </label>
+        </RigthCol>
       </Form>
     </SiteContainer>
   )
