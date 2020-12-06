@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
+import {storage} from "../services/firestore";
 import { submitImovel, submitImovelPrivate } from '../services/firestore'
 
 import { useContext } from 'react'
@@ -30,7 +31,8 @@ TODO
 - adicionar demais campos --PRATICAMENTE OK
 - layoutar --OK
 - adicionar validação de autenticação --OK?
-- suporte para upload de imagem --TODO VINICIUS
+
+- suporte para upload de imagem -- todo upload sendo feito, agora tem que ver como fazer pra fazer com que ela seja atrelada ao imovel
 
 em algum momento melhorar o código --QUE MOMENTO EIN???
 
@@ -156,10 +158,8 @@ export default function AdmFormImovel() {
 
     descricao:
       'descrição do imóvel aidosjaoiwjaiosdfji oaejsfio asjdfio ajsfio jasoidfh aisufh iuasdfhj iuashf iuasjdfiu\n\nNOVALINHAAQUI ahsfiuashdfiu ahsfiu ajsdfiu ajweifu hasdfiu hasg hasdfiu jasgiu jhasdfio hasegio hasdiofj asih iaospdfh aioseh iaosdfh aisoeth iuasdfj **BOLD?** eikfn aslkdjfn alskjnsalkdfh asieofh asgh pasdfih aphsfipuv ihyahsudkf nasiruog nasuich napriusg bnsaupicn parytbn asuinc uaipsrh uasgh uapsfh puiashrg ipuashf iuasf',
-    image: []
   }
 
-  // TODO vinicius
 
   const { currentUser } = useContext(AuthContext)
 
@@ -167,6 +167,7 @@ export default function AdmFormImovel() {
   // baseado no video https://www.google.com/search?q=upload+image+firebase+react&rlz=1C5CHFA_enBR887BR888&oq=upload+image+firebase+&aqs=chrome.2.69i57j0i457j0j0i20i263j0l5.4036j0j7&sourceid=chrome&ie=UTF-8#kpvalbx=_7Q3NX7qIEvWy5OUPkeC52A88
   const [image, setImage] = useState(null);
 
+  // aqui o cara pega a imagem que foi selecionada do computador
   const handleImageChange = e => {
     console.log(e)
     if (e.target.files[0]) {
@@ -175,20 +176,19 @@ export default function AdmFormImovel() {
     }
   }
 
-  //chamar aqui esse cara quando clicar no "Salvar"
+  // aqui faz o upload no botao de upload rsrs
   const handleImageUpload = () => {
     console.log(image)
-    // n to conseguindo importar o storage...
 
-    // const uploadTask = storage.ref(`images/${image.name}`).put(image);
-    // uploadTask.on('state_changed', snapshot => {
-    // }, error => {
-    //   console.log(error)
-    // }, () => {
-    //   storage.ref('images').child(image.name).getDownloadURL().then(url => {
-    //     console.log(url)
-    //   })
-    // })
+    const uploadTask = storage.ref(`images/${image.name}`).put(image);
+    uploadTask.on('state_changed', snapshot => {
+    }, error => {
+      console.log(error)
+    }, () => {
+      storage.ref('images').child(image.name).getDownloadURL().then(url => {
+        console.log(url)
+      })
+    })
   }
 
   console.log("image", image);
@@ -225,9 +225,6 @@ export default function AdmFormImovel() {
 
       descricao,
 
-      images: []
-
-      // TODO vinicius
       // talvez não tenha nada aqui nesta desestruturação
       // imagens urls, // precisa pegar a resposta do upload do cloud storage, algo assim
     } = data
@@ -255,8 +252,6 @@ export default function AdmFormImovel() {
         complemento,
       },
       descricao,
-      // TODO vinicius
-      images: []
     }
 
     const snippetDatabaseSchema = {
@@ -275,11 +270,6 @@ export default function AdmFormImovel() {
         bairro,
         tipo,
       },
-      // TODO vinicius
-      // imagem: "1º url aqui",
-      image: {
-        url: ''
-      }
     }
 
     console.log({ databaseSchema })
@@ -510,12 +500,10 @@ export default function AdmFormImovel() {
               multiple
               ref={register()}
               error={errors.imagens}
-              // TODO vinicius
               onChange={handleImageChange}
             />
           </label>
-          <button //onClick={handleImageUpload}
-         >Upload image</button>
+          <button onClick={handleImageUpload}>Upload image</button>
         </RigthCol>
       </Form>
     </SiteContainer>
