@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { submitImovel, submitImovelPrivate } from '../services/firestore'
@@ -156,12 +156,42 @@ export default function AdmFormImovel() {
 
     descricao:
       'descrição do imóvel aidosjaoiwjaiosdfji oaejsfio asjdfio ajsfio jasoidfh aisufh iuasdfhj iuashf iuasjdfiu\n\nNOVALINHAAQUI ahsfiuashdfiu ahsfiu ajsdfiu ajweifu hasdfiu hasg hasdfiu jasgiu jhasdfio hasegio hasdiofj asih iaospdfh aioseh iaosdfh aisoeth iuasdfj **BOLD?** eikfn aslkdjfn alskjnsalkdfh asieofh asgh pasdfih aphsfipuv ihyahsudkf nasiruog nasuich napriusg bnsaupicn parytbn asuinc uaipsrh uasgh uapsfh puiashrg ipuashf iuasf',
+    image: []
   }
 
   // TODO vinicius
-  // function fileUpload() {}
 
   const { currentUser } = useContext(AuthContext)
+
+
+  // baseado no video https://www.google.com/search?q=upload+image+firebase+react&rlz=1C5CHFA_enBR887BR888&oq=upload+image+firebase+&aqs=chrome.2.69i57j0i457j0j0i20i263j0l5.4036j0j7&sourceid=chrome&ie=UTF-8#kpvalbx=_7Q3NX7qIEvWy5OUPkeC52A88
+  const [image, setImage] = useState(null);
+
+  const handleImageChange = e => {
+    console.log(e)
+    if (e.target.files[0]) {
+      //aqui setando "image" como a imagem selecionada
+      setImage(e.target.files[0])
+    }
+  }
+
+  //chamar aqui esse cara quando clicar no "Salvar"
+  const handleImageUpload = () => {
+    console.log(image)
+    // n to conseguindo importar o storage...
+
+    // const uploadTask = storage.ref(`images/${image.name}`).put(image);
+    // uploadTask.on('state_changed', snapshot => {
+    // }, error => {
+    //   console.log(error)
+    // }, () => {
+    //   storage.ref('images').child(image.name).getDownloadURL().then(url => {
+    //     console.log(url)
+    //   })
+    // })
+  }
+
+  console.log("image", image);
 
   const { register, handleSubmit, errors } = useForm({ defaultValues })
 
@@ -195,6 +225,8 @@ export default function AdmFormImovel() {
 
       descricao,
 
+      images: []
+
       // TODO vinicius
       // talvez não tenha nada aqui nesta desestruturação
       // imagens urls, // precisa pegar a resposta do upload do cloud storage, algo assim
@@ -224,7 +256,7 @@ export default function AdmFormImovel() {
       },
       descricao,
       // TODO vinicius
-      // imagens: [imagens urls],
+      images: []
     }
 
     const snippetDatabaseSchema = {
@@ -245,6 +277,9 @@ export default function AdmFormImovel() {
       },
       // TODO vinicius
       // imagem: "1º url aqui",
+      image: {
+        url: ''
+      }
     }
 
     console.log({ databaseSchema })
@@ -476,9 +511,11 @@ export default function AdmFormImovel() {
               ref={register()}
               error={errors.imagens}
               // TODO vinicius
-              // onChange={fileUpload}
+              onChange={handleImageChange}
             />
           </label>
+          <button //onClick={handleImageUpload}
+         >Upload image</button>
         </RigthCol>
       </Form>
     </SiteContainer>
