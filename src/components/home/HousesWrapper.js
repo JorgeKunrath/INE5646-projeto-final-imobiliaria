@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Houses from './Houses'
 import Filters from './Filters'
+import { getImoveisResumo } from '../../services/firestore'
 
 const Section = styled.section`
   display: grid;
@@ -19,55 +20,14 @@ export default function HousesWrapper() {
 
   React.useEffect(() => {
     // get data from database
-    const databaseResponseJson = [
-      {
-        codigo: 1,
-        imagem:
-          'https://wp-tid.zillowstatic.com/25/Traditional-style-suburban-home-shutterstock_398991412-823eff-1024x546.jpg',
-        titulo: 'Titulo da casa aqui lasldjals laslal',
-        bairro: 'Trindade',
-        cidade: 'Florianópolis',
-        aluguel: 3400.2,
-      },
-      {
-        codigo: 2,
-        imagem:
-          'https://media.gazetadopovo.com.br/haus/2019/06/tiny-house-nation-haus-768x512-d5d21fa0.jpg',
-        titulo: 'Titulo da casa',
-        bairro: 'Trindade',
-        cidade: 'Florianópolis',
-        aluguel: 3400.2,
-      },
-      {
-        codigo: 3,
-        imagem:
-          'https://q4g9y5a8.rocketcdn.me/wp-content/uploads/2020/02/home-banner-2020-02-min.jpg',
-        titulo: 'Titulo da casa aqui lasldjals laslal',
-        bairro: 'Trindade',
-        cidade: 'Florianópolis',
-        aluguel: 3400.2,
-      },
-      {
-        codigo: 4,
-        imagem:
-          'https://media.gazetadopovo.com.br/haus/2019/06/tiny-house-nation-haus-768x512-d5d21fa0.jpg',
-        titulo: 'Titulo da casa aqui lasldjals laslal',
-        bairro: 'Trindade',
-        cidade: 'Florianópolis',
-        aluguel: 3400.2,
-      },
-      {
-        codigo: 5,
-        imagem:
-          'https://wp-tid.zillowstatic.com/25/Traditional-style-suburban-home-shutterstock_398991412-823eff-1024x546.jpg',
-        titulo: 'Titulo da casa aqui lasldjals laslal',
-        bairro: 'Trindade',
-        cidade: 'Florianópolis',
-        aluguel: 3400.2,
-      },
-    ]
+    async function getData() {
+      const databaseResponseJson = await getImoveisResumo()
+      setRawData(databaseResponseJson)
 
-    setTimeout(() => setRawData(databaseResponseJson), 1000)
+      // provisório, ou talvez o valor inicial possa ser isso mesmo
+      setFilteredData(databaseResponseJson)
+    }
+    getData()
   }, [])
 
   return (
@@ -77,7 +37,6 @@ export default function HousesWrapper() {
         filteredData={filteredData}
         setFilteredData={setFilteredData}
       />
-      {/* pass data to Houses (houses dosn`t care about logic, just render) */}
       <Houses data={filteredData} />
     </Section>
   )
