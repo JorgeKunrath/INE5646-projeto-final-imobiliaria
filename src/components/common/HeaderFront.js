@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import User from '../../icons/User'
+import IcoUser from '../../icons/User'
 import SiteContainer from './SiteContainer'
 
 const HeaderInner = styled.div`
@@ -48,7 +48,7 @@ export default function HeaderFront() {
           <a href="tel:48999999999" className="tel">
             48 99999 9999
           </a>
-          <User width={40} height={40} />
+          <IcoUser size={40} />
         </HeaderInner>
       </SiteContainer>
     </header>

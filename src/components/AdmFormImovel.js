@@ -48,7 +48,7 @@ const Form = styled.form`
     display: flex;
     flex-flow: column;
     margin-bottom: 1em;
-    color: #828282;
+    color: var(--gray3);
     min-width: 0;
   }
 
@@ -91,7 +91,7 @@ const InputStyled = styled.input`
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 0.5em 0.75em;
-  color: #828282;
+  color: var(--gray3);
   border: ${(props) =>
     props.error ? '1px solid #eb5757' : '1px solid #e0e0e0'};
   box-shadow: ${(props) =>

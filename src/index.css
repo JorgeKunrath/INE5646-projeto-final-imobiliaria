@@ -3,6 +3,7 @@ html {
   --green: #27ae60;
   --orange: #f2994a;
   --black: #333333;
+  --gray3: #828282;
 
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 0 4px rgba(0, 0, 0, 0.05);
 }

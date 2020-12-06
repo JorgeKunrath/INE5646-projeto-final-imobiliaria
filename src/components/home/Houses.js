@@ -4,6 +4,7 @@ import Skeleton from 'react-loading-skeleton'
 
 import Card from '../common/Card'
 import { Link } from 'react-router-dom'
+import DetailsIcons from '../common/DetailsIcons'
 
 const Main = styled.main`
   flex-grow: 1;
@@ -46,57 +47,65 @@ const Picture = styled.picture`
     width: 100%;
     height: 100%;
     object-fit: cover;
+    background: #fafafa;
   }
 `
 
 const Content = styled.div`
-  padding: 0.25em 0.5em 0.5em;
+  padding: 0.5rem 0.75rem 0.75rem;
   flex-grow: 1;
   display: flex;
   flex-flow: column;
 
   span,
   p {
-    color: #828282;
+    color: var(--gray3);
   }
 
   span {
-    font-size: 0.8em;
+    font-size: 0.9rem;
     line-height: 1.2em;
   }
 
   h3 {
-    margin: 0 0 0.5em;
+    margin: 0 0 0.5rem;
     color: #333333;
   }
 
   p {
-    margin: 0 0 0.5em;
+    margin: 0 0 0.75rem;
   }
 `
 
-// fake, é pra ser um componente próprio
-const Icons = styled.div`
-  border: 2px solid blue;
-`
-
 export default function Houses(props) {
+  console.log({ props })
   return (
     <Main>
       {props.data ? (
         props.data.map((data) => (
-          <HouseCard key={`HouseCard-${data.codigo}`}>
-            <Link to={`imovel/cod-${data.codigo}`}>
+          <HouseCard key={`HouseCard-${data.codRef}`}>
+            <Link to={`imovel/cod-${data.codRef}`}>
               <Picture>
-                <img src={data.imagem} alt="" />
+                {/* TODO consumir imagem do banco de dados */}
+                <img
+                  src="https://thumbor.forbes.com/thumbor/fit-in/1200x0/filters%3Aformat%28jpg%29/https%3A%2F%2Fspecials-images.forbesimg.com%2Fimageserve%2F1026205392%2F0x0.jpg"
+                  alt=""
+                />
               </Picture>
               <Content>
                 <span>
-                  {data.bairro} — {data.cidade}
+                  {data.endereco.bairro} — {data.endereco.cidade}
                 </span>
                 <h3>{data.titulo}</h3>
-                <p>R$ {data.aluguel.toFixed(2).replace('.', ',')}</p>
-                <Icons style={{ marginTop: 'auto' }}>Icons com infos</Icons>
+                {/* price can be better */}
+                <p>
+                  R${' '}
+                  {new Number(data.aluguel)
+                    .toFixed(0)
+                    .toString()
+                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, '.')}
+                </p>
+                <DetailsIcons data={data.detalhes} />
               </Content>
             </Link>
           </HouseCard>
