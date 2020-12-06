@@ -37,27 +37,43 @@ export const readTest = async () => {
 /* real things */
 
 // TODO: don't have a way to update yet, just create
-export const submitImovel = (dataPublic, dataPrivate) => {
+export const submitImovel = (dataPublic, dataSnippet, cod) => {
   // Get a new write batch
   let batch = db.batch()
 
-  // Set the value in imovel
-  let imovelRef = db.collection('imovel').doc()
-  batch.set(imovelRef, {
+  // Get user
+  let user = firebase.auth().currentUser
+  console.log('user.uid', user.uid)
+
+  // -----
+  // Set the value in usuarios > imoveis
+  let usuarios_imoveis_ref = db
+    .collection('usuarios')
+    .doc(user.uid)
+    .collection('imoveis')
+    .doc()
+  batch.set(usuarios_imoveis_ref, {
+    cod,
+    userUidRef: user.uid,
     ...dataPublic,
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   })
 
-  // Set the value in imovel private
-  let imovelPrivateRef = db.collection('imovelPrivate').doc()
-  batch.set(imovelPrivateRef, {
-    ...dataPrivate,
+  // -----
+  // Set the value in imovel_resumo
+  let snippet_imovel_ref = db.collection('imoveis_resumo').doc()
+  batch.set(snippet_imovel_ref, {
+    corRef: cod,
+    userUidRef: user.uid,
+    ...dataSnippet,
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   })
 
   // Commit the batch
   batch.commit().then(function () {
-    console.log('submitImovel: imovel and imovelPrivate submited')
+    console.log(
+      'submitImovel: created usuarios/userUid/imoveis and snippet_imovel'
+    )
   })
 
   return null

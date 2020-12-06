@@ -156,13 +156,10 @@ export default function AdmFormImovel() {
 
     descricao:
       'descrição do imóvel aidosjaoiwjaiosdfji oaejsfio asjdfio ajsfio jasoidfh aisufh iuasdfhj iuashf iuasjdfiu ahsfiuashdfiu ahsfiu ajsdfiu ajweifu hasdfiu hasg hasdfiu jasgiu jhasdfio hasegio hasdiofj asih iaospdfh aioseh iaosdfh aisoeth iuasdfj aisueth aisudfhasu eikfn aslkdjfn alskjnsalkdfh asieofh asgh pasdfih aphsfipuv ihyahsudkf nasiruog nasuich napriusg bnsaupicn parytbn asuinc uaipsrh uasgh uapsfh puiashrg ipuashf iuasf',
-
-    proprietario: 'fulano de tal',
-    proprietarioTel: '(45) 888888 88888',
-    proprietarioEmail: 'fulano@detal.com',
-    anotacoes:
-      'asdfj aoisdfj ioajwesgio asjdfio ajsiogd jaosidfj aisoefj oa;sidfj ;aisjgoia;sjf oi;asdjgf ioasdjfio ajsoign aiosdfn oaisdfoij',
   }
+
+  // TODO vinicius
+  // function fileUpload() {}
 
   const { currentUser } = useContext(AuthContext)
 
@@ -170,8 +167,6 @@ export default function AdmFormImovel() {
 
   const onSubmit = (data) => {
     console.log({ data })
-
-    console.log({ currentUser })
 
     const fakeCod = Math.floor(Math.random() * (999 - 1 + 1)) + 1
     console.log({ fakeCod })
@@ -200,17 +195,15 @@ export default function AdmFormImovel() {
 
       descricao,
 
-      proprietario,
-      proprietarioTel,
-      proprietarioEmail,
-      anotacoes,
-      // imagens,
+      // TODO vinicius
+      // talvez não tenha nada aqui nesta desestruturação
+      // imagens urls, // precisa pegar a resposta do upload do cloud storage, algo assim
     } = data
 
     const databaseSchema = {
-      cod: fakeCod,
       status,
       titulo,
+      // cod vai pela request por enquanto
       inscricaoMunicipal,
       detalhes: {
         dormitorios,
@@ -230,25 +223,35 @@ export default function AdmFormImovel() {
         complemento,
       },
       descricao,
-      // imagens: [imagens],
+      // TODO vinicius
+      // imagens: [imagens urls],
     }
 
-    const databasePrivateSchema = {
-      cod: fakeCod,
-      proprietario: {
-        proprietario,
-        proprietarioTel,
-        proprietarioEmail,
+    const snippetDatabaseSchema = {
+      status,
+      titulo,
+      // cod vai pela request por enquanto
+      detalhes: {
+        dormitorios,
+        banheiros,
+        vagas,
+        area,
       },
-      anotacoes,
-      // token de autenticação
+      aluguel,
+      endereco: {
+        cidade,
+        bairro,
+        tipo,
+      },
+      // TODO vinicius
+      // imagem: "1º url aqui",
     }
 
     console.log({ databaseSchema })
-    console.log({ databasePrivateSchema })
+    console.log({ snippetDatabaseSchema })
 
     // send data to firestore
-    submitImovel(databaseSchema, databasePrivateSchema)
+    submitImovel(databaseSchema, snippetDatabaseSchema, fakeCod)
   }
 
   console.log({ errors })
@@ -267,15 +270,32 @@ export default function AdmFormImovel() {
             />
           </label>
 
-          <label>
-            Inscrição Municipal
-            <InputStyled
-              type="text"
-              name="inscricaoMunicipal"
-              ref={register({ required: true })}
-              error={errors.inscricaoMunicipal}
-            />
-          </label>
+          <Fieldset inputCount={2}>
+            <label>
+              Inscrição Municipal
+              <InputStyled
+                type="text"
+                name="inscricaoMunicipal"
+                ref={register({ required: true })}
+                error={errors.inscricaoMunicipal}
+              />
+            </label>
+
+            <label>
+              Status
+              <InputStyled
+                as="select"
+                name="status"
+                ref={register({ required: true })}
+                error={errors.status}
+              >
+                <option value="disponivel">Disponível</option>
+                <option value="reservado">Reservado</option>
+                <option value="alugado">Alugado</option>
+                <option value="indisponivel">Indisponível</option>
+              </InputStyled>
+            </label>
+          </Fieldset>
 
           <Fieldset inputCount={4}>
             <label>
@@ -329,21 +349,6 @@ export default function AdmFormImovel() {
                 error={errors.aluguel}
               />
             </label>
-
-            <label>
-              Status
-              <InputStyled
-                as="select"
-                name="status"
-                ref={register({ required: true })}
-                error={errors.status}
-              >
-                <option value="disponivel">Disponível</option>
-                <option value="reservado">Reservado</option>
-                <option value="alugado">Alugado</option>
-                <option value="indisponivel">Indisponível</option>
-              </InputStyled>
-            </label>
           </Fieldset>
 
           <hr style={{ width: '100%' }} />
@@ -351,8 +356,9 @@ export default function AdmFormImovel() {
           <Fieldset inputCount={3}>
             <label>
               <span>
-                CEP{' '}
+                CEP
                 <small style={{ color: 'lightcoral' }}>
+                  {' '}
                   implementar busca cep
                 </small>
               </span>
@@ -454,48 +460,6 @@ export default function AdmFormImovel() {
             />
           </label>
 
-          <hr style={{ width: '100%' }} />
-
-          <label>
-            Proprietário
-            <InputStyled
-              type="text"
-              name="proprietario"
-              ref={register({ required: true })}
-              error={errors.proprietario}
-            />
-          </label>
-
-          <label>
-            Telefone Proprietário
-            <InputStyled
-              type="tel"
-              name="proprietarioTel"
-              ref={register({ required: true })}
-              error={errors.proprietarioTel}
-            />
-          </label>
-          <label>
-            Email Proprietário
-            <InputStyled
-              type="email"
-              name="proprietarioEmail"
-              ref={register({ required: true })}
-              error={errors.proprietarioEmail}
-            />
-          </label>
-          <label>
-            Anotações
-            <InputStyled
-              as="textarea"
-              rows="6"
-              className="textarea"
-              name="anotacoes"
-              ref={register()}
-              error={errors.anotacoes}
-            />
-          </label>
-
           <Button type="submit">Salvar</Button>
         </LeftCol>
 
@@ -504,7 +468,6 @@ export default function AdmFormImovel() {
             <span>
               Imagens <small style={{ color: 'lightcoral' }}>implementar</small>
             </span>
-
             <InputStyled
               rows="6"
               type="file"
@@ -512,6 +475,8 @@ export default function AdmFormImovel() {
               multiple
               ref={register()}
               error={errors.imagens}
+              // TODO vinicius
+              // onChange={fileUpload}
             />
           </label>
         </RigthCol>
