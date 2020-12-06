@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import User from '../../icons/User'
+import IcoUser from '../../icons/User'
 import SiteContainer from './SiteContainer'
 
 const HeaderInner = styled.div`
@@ -61,7 +61,7 @@ export default function HeaderAdmin() {
           <Link to="/admin/imovel/novo" className="cta">
             Adicionar Imóvel
           </Link>
-          <User width={40} height={40} />
+          <IcoUser size={40} />
         </HeaderInner>
       </SiteContainer>
     </header>

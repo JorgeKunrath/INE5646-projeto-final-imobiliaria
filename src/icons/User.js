@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function User({ width = 24, height = 24 }) {
+export default function IcoUser({ size = 24 }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,8 +10,8 @@ export default function User({ width = 24, height = 24 }) {
       version="1.1"
       viewBox="0 0 464 464"
       xmlSpace="preserve"
-      width={width}
-      height={height}
+      width={size}
+      height={size}
     >
       <g fill="#F9EDE0">
         <path d="M305.872 451.92a209.097 209.097 0 01-7.296 2.336c2.456-.736 4.88-1.528 7.296-2.336zM317.992 447.472c-2.608 1.04-5.216 2.064-7.872 3.008a231.662 231.662 0 007.872-3.008z"></path>
