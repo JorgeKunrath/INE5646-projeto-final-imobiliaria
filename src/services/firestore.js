@@ -63,7 +63,7 @@ export const submitImovel = (dataPublic, dataSnippet, cod) => {
   // Set the value in imovel_resumo
   let snippet_imovel_ref = db.collection('imoveis_resumo').doc()
   batch.set(snippet_imovel_ref, {
-    corRef: cod,
+    codRef: cod,
     userUidRef: user.uid,
     ...dataSnippet,
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -77,4 +77,15 @@ export const submitImovel = (dataPublic, dataSnippet, cod) => {
   })
 
   return null
+}
+
+// request snippet imoveis
+export const getImoveisResumo = async () => {
+  const snapshot = await db
+    .collection('imoveis_resumo')
+    .orderBy('createdAt', 'desc')
+    .get()
+  const data = snapshot.docs.map((doc) => doc.data())
+  console.log({ data })
+  return data
 }
