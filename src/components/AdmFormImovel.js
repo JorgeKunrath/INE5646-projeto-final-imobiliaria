@@ -12,8 +12,8 @@ import Input from './common/Input'
 contador para o cod do imóvel:
 - ter um doc no firestore pra manter a contagem (mesma coleção)
 - antes de submeter o form:
-  - batch: ler a contagem, aumentar 1
-- adicionar a contagem no objeto do form
+  - batch: ler a contagem; aumentar 1.
+- adicionar a contagem no objeto da nova entrada
 - submeter
 (se possível fazer tudo isso num batch só, mas acho q não é possível não — só com algum cloud function, mas n tem necessidade)
 https://fireship.io/snippets/firestore-increment-tips/
@@ -27,12 +27,12 @@ outra alternativa: https://firebase.google.com/docs/firestore/extend-with-functi
 
 TODO
 
-- adicionar demais campos
-- layoutar
-- adicionar validação de autenticação
-- suporte para upload de imagem
+- adicionar demais campos --PRATICAMENTE OK
+- layoutar --OK
+- adicionar validação de autenticação --OK?
+- suporte para upload de imagem --TODO VINICIUS
 
-em algum momento melhorar o código
+em algum momento melhorar o código --QUE MOMENTO EIN???
 
 
 
