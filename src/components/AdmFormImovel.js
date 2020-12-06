@@ -134,16 +134,16 @@ const RigthCol = styled.div`
 export default function AdmFormImovel() {
   const defaultValues = {
     cod: '0000',
-    titulo: 'titulo default',
+    titulo: 'Casa com 2 quartos aconchegante',
     inscricaoMunicipal: '0004.5.2.455.255',
 
-    dormitorios: 5,
-    banheiros: 3,
+    dormitorios: 2,
+    banheiros: 1,
     vagas: 0,
-    area: 454,
+    area: 140,
 
     aluguel: 1400.5,
-    status: 'reservado',
+    status: 'disponível',
 
     cep: '88000-100',
     estado: 'Santa Catarina',
@@ -155,7 +155,7 @@ export default function AdmFormImovel() {
     complemento: '402',
 
     descricao:
-      'descrição do imóvel aidosjaoiwjaiosdfji oaejsfio asjdfio ajsfio jasoidfh aisufh iuasdfhj iuashf iuasjdfiu ahsfiuashdfiu ahsfiu ajsdfiu ajweifu hasdfiu hasg hasdfiu jasgiu jhasdfio hasegio hasdiofj asih iaospdfh aioseh iaosdfh aisoeth iuasdfj aisueth aisudfhasu eikfn aslkdjfn alskjnsalkdfh asieofh asgh pasdfih aphsfipuv ihyahsudkf nasiruog nasuich napriusg bnsaupicn parytbn asuinc uaipsrh uasgh uapsfh puiashrg ipuashf iuasf',
+      'descrição do imóvel aidosjaoiwjaiosdfji oaejsfio asjdfio ajsfio jasoidfh aisufh iuasdfhj iuashf iuasjdfiu\n\nNOVALINHAAQUI ahsfiuashdfiu ahsfiu ajsdfiu ajweifu hasdfiu hasg hasdfiu jasgiu jhasdfio hasegio hasdiofj asih iaospdfh aioseh iaosdfh aisoeth iuasdfj **BOLD?** eikfn aslkdjfn alskjnsalkdfh asieofh asgh pasdfih aphsfipuv ihyahsudkf nasiruog nasuich napriusg bnsaupicn parytbn asuinc uaipsrh uasgh uapsfh puiashrg ipuashf iuasf',
   }
 
   // TODO vinicius
@@ -289,10 +289,10 @@ export default function AdmFormImovel() {
                 ref={register({ required: true })}
                 error={errors.status}
               >
-                <option value="disponivel">Disponível</option>
+                <option value="disponível">Disponível</option>
                 <option value="reservado">Reservado</option>
                 <option value="alugado">Alugado</option>
-                <option value="indisponivel">Indisponível</option>
+                <option value="indisponível">Indisponível</option>
               </InputStyled>
             </label>
           </Fieldset>
