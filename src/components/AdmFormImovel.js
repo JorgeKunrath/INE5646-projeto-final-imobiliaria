@@ -167,6 +167,8 @@ export default function AdmFormImovel() {
   // baseado no video https://www.google.com/search?q=upload+image+firebase+react&rlz=1C5CHFA_enBR887BR888&oq=upload+image+firebase+&aqs=chrome.2.69i57j0i457j0j0i20i263j0l5.4036j0j7&sourceid=chrome&ie=UTF-8#kpvalbx=_7Q3NX7qIEvWy5OUPkeC52A88
   const [image, setImage] = useState(null);
 
+  //url da imagem
+  const [url, setUrl] = useState("");
   // aqui o cara pega a imagem que foi selecionada do computador
   const handleImageChange = e => {
     console.log(e)
@@ -186,7 +188,8 @@ export default function AdmFormImovel() {
       console.log(error)
     }, () => {
       storage.ref('images').child(image.name).getDownloadURL().then(url => {
-        console.log(url)
+        console.log(url, "URL DA IMAGEM!")
+        setUrl(url);
       })
     })
   }
@@ -504,6 +507,8 @@ export default function AdmFormImovel() {
             />
           </label>
           <button onClick={handleImageUpload}>Upload image</button>
+          <br/>
+          <img src={url}/>
         </RigthCol>
       </Form>
     </SiteContainer>
