@@ -92,3 +92,26 @@ export const getImoveisResumo = async () => {
   console.log({ data })
   return data
 }
+
+// request imovel
+export const getImovel = async (cod) => {
+  let data
+  // 1. busca todas as coleções chamada imoveis
+  // 2. seleciona os campos desejados
+  const query = await db
+    .collectionGroup('imoveis')
+    .where('cod', '==', cod)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        console.log('success: getImovel')
+        data = doc.data()
+      })
+    })
+    .catch(function (error) {
+      console.log('Error getting documents: ', error)
+    })
+
+  return data
+}
