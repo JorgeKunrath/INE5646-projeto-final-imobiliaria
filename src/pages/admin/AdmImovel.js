@@ -3,7 +3,7 @@ import React from 'react'
 import HeaderAdmin from '../../components/common/HeaderAdmin'
 import Footer from '../../components/common/Footer'
 // import AdmFormExample from '../../components/AdmFormExample'
-import AdmFormImovel from '../../components/AdmFormImovel'
+import AdmFormImovel from '../../components/admin/form/AdmFormImovel'
 import SiteContainer from '../../components/common/SiteContainer'
 
 export default function AdmImovel() {

@@ -1,6 +1,6 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
-import '@firebase/storage';
+import '@firebase/storage'
 // import 'firebase/auth'
 
 const firebaseConfig = {
@@ -15,10 +15,13 @@ const firebaseConfig = {
 
 export const app = firebase.initializeApp(firebaseConfig)
 
+// ========================================================================
+// ========================================================================
+// ========================================================================
+
+// FIRESTORE DATABASE
+
 export const db = firebase.firestore()
-
-export const storage = firebase.storage();
-
 export const createTest = (object) => {
   db.collection('test')
     .add({
@@ -40,7 +43,7 @@ export const readTest = async () => {
 /* real things */
 
 // TODO: don't have a way to update yet, just create
-export const submitImovel = (dataPublic, dataSnippet, cod) => {
+export const submitImovel = (dataPublic, dataSnippet, cod, setLoading) => {
   // Get a new write batch
   let batch = db.batch()
 
@@ -77,6 +80,7 @@ export const submitImovel = (dataPublic, dataSnippet, cod) => {
     console.log(
       'submitImovel: created usuarios/userUid/imoveis and snippet_imovel'
     )
+    setLoading(false)
   })
 
   return null
@@ -114,4 +118,45 @@ export const getImovel = async (cod) => {
     })
 
   return data
+}
+
+// ========================================================================
+// ========================================================================
+// ========================================================================
+
+// CLOUD STORAGE
+
+export const storage = firebase.storage()
+
+// BUG FIX TODO
+// UPLOAD ASSIM ESTÁ SOBRESCREVENDO A IMAGEM SE ELA TEM O MESMO NOME
+// se pá usar algum hash adicional no nome, n sei bem
+// ou pelo menos ter uma pasta para cada usuário
+export const uploadOneImageToCloudStorageAndSetUrl = (image, setUrl) => {
+  let dbImageUrl
+
+  // Get user
+  let user = firebase.auth().currentUser
+  console.log('user.uid', user.uid)
+
+  const uploadTask = storage.ref(`images/${user.uid}/${image.name}`).put(image)
+  uploadTask.on(
+    'state_changed',
+    (snapshot) => {},
+    (error) => {
+      console.log(error)
+    },
+    () => {
+      storage
+        .ref(`images/${user.uid}`)
+        .child(image.name)
+        .getDownloadURL()
+        .then((url) => {
+          console.log('Imagem salva com sucesso:', url)
+          setUrl(url)
+        })
+    }
+  )
+
+  return null
 }
