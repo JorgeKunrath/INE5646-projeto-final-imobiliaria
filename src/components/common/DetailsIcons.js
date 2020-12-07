@@ -9,6 +9,9 @@ import IcoArea from '../../icons/Area'
 const Wrapper = styled.div`
   margin-top: auto;
   padding-right: 1em;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
 
   display: flex;
   justify-content: space-between;
@@ -19,11 +22,12 @@ const Wrapper = styled.div`
     align-items: center;
     font-size: 0.9rem;
     color: var(--gray3);
+    margin-right: 0.5rem;
   }
 
   svg {
     fill: var(--orange);
-    margin-right: 0.5em;
+    margin-right: 0.25em;
   }
 `
 

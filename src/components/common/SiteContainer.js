@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Div = styled.div`
-  width: calc(100% - 1em);
+  width: calc(100% - 2em);
   max-width: 1224px;
   margin-left: auto;
   margin-right: auto;
