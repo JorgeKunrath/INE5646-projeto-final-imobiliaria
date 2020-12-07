@@ -1,13 +1,21 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import styled from 'styled-components'
-import {storage} from "../services/firestore";
-import { submitImovel, submitImovelPrivate } from '../services/firestore'
+import { uploadOneImageToCloudStorageAndSetUrl } from '../../../services/firestore'
+import { submitImovel } from '../../../services/firestore'
 
-import { useContext } from 'react'
-import { AuthContext } from './AuthProvider'
-import SiteContainer from './common/SiteContainer'
-import Input from './common/Input'
+// import { useContext } from 'react'
+// import { AuthContext } from './AuthProvider'
+import SiteContainer from '../../common/SiteContainer'
+
+import {
+  Form,
+  Fieldset,
+  InputStyled,
+  Button,
+  LeftCol,
+  RigthCol,
+  ImagesUploaded,
+} from './AdmFormImovel_styles'
 
 /*
 contador para o cod do imóvel:
@@ -31,107 +39,14 @@ TODO
 - adicionar demais campos --PRATICAMENTE OK
 - layoutar --OK
 - adicionar validação de autenticação --OK?
-
-- suporte para upload de imagem -- todo upload sendo feito, agora tem que ver como fazer pra fazer com que ela seja atrelada ao imovel
+- suporte para upload de imagem -- todo upload sendo feito, agora tem que ver como fazer pra fazer com que ela seja atrelada ao imovel --OK
+- TODO implantar modo de edição (ajustar request, inserir data real no load, etc)
 
 em algum momento melhorar o código --QUE MOMENTO EIN???
 
 
 
 */
-
-const Form = styled.form`
-  display: flex;
-  flex-wrap: wrap;
-  position: relative;
-  margin: 2em 0;
-
-  label {
-    display: flex;
-    flex-flow: column;
-    margin-bottom: 1em;
-    color: var(--gray3);
-    min-width: 0;
-  }
-
-  hr {
-    margin-bottom: 1em;
-    border: none;
-    border-bottom: 1px solid #e0e0e0;
-  }
-
-  .price {
-    position: relative;
-
-    input {
-      padding-left: 2em;
-    }
-
-    ::before {
-      content: 'R$ ';
-      position: absolute;
-      bottom: calc(0.5em + 2px);
-      left: 0.75em;
-      width: 0;
-    }
-  }
-`
-
-const Fieldset = styled.div`
-  display: grid;
-  grid-template-columns: ${({ inputCount }) => `repeat(${inputCount}, 1fr)`};
-  grid-gap: 1em;
-  padding: 0;
-  max-width: 100%;
-`
-
-const InputStyled = styled.input`
-  width: unset;
-  max-width: auto;
-  margin-top: 0.25em;
-  font-size: inherit;
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  padding: 0.5em 0.75em;
-  color: var(--gray3);
-  border: ${(props) =>
-    props.error ? '1px solid #eb5757' : '1px solid #e0e0e0'};
-  box-shadow: ${(props) =>
-    props.error ? 'inset 0 0 0 1px #eb5757' : 'inset 0 0 0 0 transparent'};
-  transition: box-shadow 0.2s ease, border 0.2s ease;
-
-  :focus {
-    outline: none;
-  }
-
-  &.textarea {
-    resize: vertical;
-  }
-`
-
-const Button = styled.button`
-  position: absolute;
-  top: -4em;
-  right: 0;
-
-  display: block;
-  padding: 0.5em 0.75em;
-  background-color: #219653;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: inherit;
-  cursor: pointer;
-`
-
-const LeftCol = styled.div`
-  width: 60%;
-`
-
-const RigthCol = styled.div`
-  width: 40%;
-  padding-left: 2rem;
-`
 
 export default function AdmFormImovel() {
   const defaultValues = {
@@ -160,48 +75,74 @@ export default function AdmFormImovel() {
       'descrição do imóvel aidosjaoiwjaiosdfji oaejsfio asjdfio ajsfio jasoidfh aisufh iuasdfhj iuashf iuasjdfiu\n\nNOVALINHAAQUI ahsfiuashdfiu ahsfiu ajsdfiu ajweifu hasdfiu hasg hasdfiu jasgiu jhasdfio hasegio hasdiofj asih iaospdfh aioseh iaosdfh aisoeth iuasdfj **BOLD?** eikfn aslkdjfn alskjnsalkdfh asieofh asgh pasdfih aphsfipuv ihyahsudkf nasiruog nasuich napriusg bnsaupicn parytbn asuinc uaipsrh uasgh uapsfh puiashrg ipuashf iuasf',
   }
 
+  // --------------------
+  // GLOBAL
+  // --------------------
+  const [loading, setLoading] = useState(false)
 
-  const { currentUser } = useContext(AuthContext)
+  React.useEffect(() => {
+    console.log({ loading })
+  }, [loading])
 
-
+  // --------------------
+  // GET IMAGE
+  // --------------------
   // baseado no video https://www.google.com/search?q=upload+image+firebase+react&rlz=1C5CHFA_enBR887BR888&oq=upload+image+firebase+&aqs=chrome.2.69i57j0i457j0j0i20i263j0l5.4036j0j7&sourceid=chrome&ie=UTF-8#kpvalbx=_7Q3NX7qIEvWy5OUPkeC52A88
-  const [image, setImage] = useState(null);
 
-  //url da imagem
-  const [url, setUrl] = useState("");
-  // aqui o cara pega a imagem que foi selecionada do computador
-  const handleImageChange = e => {
-    console.log(e)
-    if (e.target.files[0]) {
-      //aqui setando "image" como a imagem selecionada
-      setImage(e.target.files[0])
+  // imagens selecionadas no navegador
+  const [images, setImages] = useState([])
+
+  // url da imagem (resposta cloud)
+  const [url, setUrl] = useState()
+
+  // array de urls de imagens (manipulado)
+  const [urls, setUrls] = useState([])
+
+  // pega a imagem que foi selecionada do computador e da um setImages
+  const handleImageChange = (e) => {
+    if (e?.target?.files?.length > 0) {
+      setImages(e.target.files)
     }
   }
 
-  // aqui faz o upload no botao de upload rsrs
-  const handleImageUpload = () => {
-    console.log(image)
+  // quando mudar a seleção de imagens
+  React.useEffect(() => {
+    setLoading(true)
 
-    const uploadTask = storage.ref(`images/${image.name}`).put(image);
-    uploadTask.on('state_changed', snapshot => {
-    }, error => {
-      console.log(error)
-    }, () => {
-      storage.ref('images').child(image.name).getDownloadURL().then(url => {
-        console.log(url, "URL DA IMAGEM!")
-        setUrl(url);
+    // limpa o que já tinha sido selecionado
+    setUrl(null)
+    setUrls([])
+
+    // faz requests para cada imagem em separado
+    if (images.length > 0) {
+      const arrayFiles = Array.from(images)
+      arrayFiles.forEach((image) => {
+        // console.log('Imagem que vai ser feito upload', image)
+        uploadOneImageToCloudStorageAndSetUrl(image, setUrl)
       })
-    })
-  }
+    }
+  }, [images])
 
-  console.log("image", image);
+  // pega cada URL em específico e agrupa num array (enviado para o db)
+  React.useEffect(() => {
+    if (url) {
+      console.log({ url })
+      setUrls(() => [...urls, url])
+    }
+    setLoading(false)
+  }, [url])
 
+  // --------------------
+  // FORM
+  // --------------------
   const { register, handleSubmit, errors } = useForm({ defaultValues })
 
   const onSubmit = (data) => {
+    setLoading(true)
+
     console.log({ data })
 
-    const fakeCod = Math.floor(Math.random() * (999 - 1 + 1)) + 1
+    const fakeCod = Math.floor(Math.random() * (9999 - 1 + 1)) + 1
     console.log({ fakeCod })
 
     // simplify the use
@@ -227,15 +168,12 @@ export default function AdmFormImovel() {
       complemento,
 
       descricao,
-
-      // talvez não tenha nada aqui nesta desestruturação
-      // imagens urls, // precisa pegar a resposta do upload do cloud storage, algo assim
     } = data
 
     const databaseSchema = {
+      // cod vai pela request por enquanto
       status,
       titulo,
-      // cod vai pela request por enquanto
       inscricaoMunicipal,
       detalhes: {
         dormitorios,
@@ -255,12 +193,14 @@ export default function AdmFormImovel() {
         complemento,
       },
       descricao,
+
+      imagens: [...urls],
     }
 
     const snippetDatabaseSchema = {
+      // cod vai pela request por enquanto
       status,
       titulo,
-      // cod vai pela request por enquanto
       detalhes: {
         dormitorios,
         banheiros,
@@ -273,13 +213,15 @@ export default function AdmFormImovel() {
         bairro,
         tipo,
       },
+
+      imagem: urls[0],
     }
 
     console.log({ databaseSchema })
     console.log({ snippetDatabaseSchema })
 
     // send data to firestore
-    submitImovel(databaseSchema, snippetDatabaseSchema, fakeCod)
+    submitImovel(databaseSchema, snippetDatabaseSchema, fakeCod, setLoading)
   }
 
   console.log({ errors })
@@ -487,29 +429,35 @@ export default function AdmFormImovel() {
               error={errors.descricao}
             />
           </label>
-
-          <Button type="submit">Salvar</Button>
         </LeftCol>
 
         <RigthCol>
           <label>
             <span>
-              Imagens <small style={{ color: 'lightcoral' }}>implementar</small>
+              Imagens{' '}
+              <small style={{ color: 'turquoise' }}>da de melhorar</small>
             </span>
             <InputStyled
-              rows="6"
               type="file"
               name="imagens"
               multiple
-              ref={register()}
+              ref={register({ required: true })}
               error={errors.imagens}
               onChange={handleImageChange}
             />
           </label>
-          <button onClick={handleImageUpload}>Upload image</button>
-          <br/>
-          <img src={url}/>
+          {urls?.length > 0 && (
+            <ImagesUploaded>
+              {urls.map((url, i) => (
+                <img key={`${url}-${i}`} src={url} />
+              ))}
+            </ImagesUploaded>
+          )}
         </RigthCol>
+
+        <Button type="submit" loading={loading ? 'true' : 'false'}>
+          {loading ? 'Carregando' : 'Salvar'}
+        </Button>
       </Form>
     </SiteContainer>
   )
