@@ -55,16 +55,10 @@ export default function Imovel() {
       {data ? (
         <>
           <HeroImovel images={data.imagens} />
-          <SiteContainer>
+          <SiteContainer style={{ maxWidth: 1200 }}>
             <Content>
               <Main titulo={data.titulo} descricao={data.descricao} />
-              <Aside
-                endereco={data.endereco}
-                detalhes={data.detalhes}
-                status={data.status}
-                cod={data.cod}
-                aluguel={data.aluguel}
-              />
+              <Aside data={data} />
             </Content>
           </SiteContainer>
         </>

@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Card from '../../common/Card'
 import DetailsIcons from '../../common/DetailsIcons'
+import ScheduleButton from './ScheduleButton'
 
 const Inner = styled.div`
   padding: 1rem;
@@ -46,25 +47,10 @@ const Adress = styled.div`
   }
 `
 
-const Button = styled.button`
-  box-sizing: inherit;
-  font: inherit;
-  color: white;
-  text-align: center;
-
-  display: block;
-  width: 100%;
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-
-  background-color: var(--blue);
-  border-radius: 5px;
-  border: 0;
-  cursor: pointer;
-`
-
-export default function Aside({ endereco, detalhes, status, cod, aluguel }) {
+export default function Aside({ data }) {
+  const { endereco, detalhes, status, cod, aluguel, userUidRef } = data
   const { rua, numero, estado, bairro, complemento, cidade } = endereco
+
   return (
     <Card>
       <Inner>
@@ -95,7 +81,7 @@ export default function Aside({ endereco, detalhes, status, cod, aluguel }) {
           <p>{cidade}</p>
         </Adress>
         <DetailsIcons data={detalhes} />
-        <Button>Marcar Visita</Button>
+        <ScheduleButton userUidRef={userUidRef} cod={cod} />
       </Inner>
     </Card>
   )

@@ -22,6 +22,8 @@ export const app = firebase.initializeApp(firebaseConfig)
 // FIRESTORE DATABASE
 
 export const db = firebase.firestore()
+
+// exemplo
 export const createTest = (object) => {
   db.collection('test')
     .add({
@@ -33,6 +35,7 @@ export const createTest = (object) => {
   return null
 }
 
+// exemplo
 export const readTest = async () => {
   const snapshot = await db.collection('test').get()
   const data = snapshot.docs.map((doc) => doc.data())
@@ -118,6 +121,16 @@ export const getImovel = async (cod) => {
     })
 
   return data
+}
+
+export const submitSchedule = (object) => {
+  db.collection('visitas')
+    .add({
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      ...object,
+    })
+    .then(() => console.log('submitSchedule: "schedule" added to Firebase'))
+  return null
 }
 
 // ========================================================================
