@@ -10,12 +10,13 @@ const Inner = styled.div`
 
 const Flags = styled.div`
   display: flex;
+  align-items: baseline;
   flex-wrap: wrap;
 
   > * {
     font-size: 0.9rem;
-    margin-right: 0.5rem;
-    margin-bottom: 0.5rem;
+    margin: 0 0.5rem 0.5rem 0;
+    white-space: nowrap;
   }
 
   span {
@@ -23,11 +24,6 @@ const Flags = styled.div`
     background-color: var(--gray5);
     border-radius: 3px;
     line-height: 1;
-  }
-
-  p {
-    margin: 0;
-    white-space: nowrap;
   }
 
   .disponivel {
@@ -38,7 +34,7 @@ const Flags = styled.div`
 
 const Price = styled.p`
   font-size: 1.3rem;
-  margin: 0.5rem 0;
+  margin: 0 0 0.5rem;
   font-weight: bold;
 `
 
