@@ -87,10 +87,7 @@ export default function Houses(props) {
             <Link to={`imovel/cod-${data.codRef}`}>
               <Picture>
                 {/* TODO consumir imagem do banco de dados */}
-                <img
-                  src="https://thumbor.forbes.com/thumbor/fit-in/1200x0/filters%3Aformat%28jpg%29/https%3A%2F%2Fspecials-images.forbesimg.com%2Fimageserve%2F1026205392%2F0x0.jpg"
-                  alt=""
-                />
+                <img src={data.imagem} alt="" />
               </Picture>
               <Content>
                 <span>
@@ -105,7 +102,7 @@ export default function Houses(props) {
                     .toString()
                     .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, '.')}
                 </p>
-                <DetailsIcons data={data.detalhes} />
+                <DetailsIcons data={data.detalhes} style={{ marginLeft: 0 }} />
               </Content>
             </Link>
           </HouseCard>
