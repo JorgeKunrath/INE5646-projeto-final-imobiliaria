@@ -13,6 +13,7 @@ import styled from 'styled-components'
 const Content = styled.main`
   /* border: 3px solid blue; */
   display: flex;
+  align-items: flex-start;
   padding: 2rem 0;
 
   > * {
@@ -24,6 +25,7 @@ const Content = styled.main`
 
   @media (max-width: 600px) {
     flex-direction: column;
+    align-items: stretch;
     > * {
       min-width: unset;
       :last-child {
@@ -47,20 +49,12 @@ export default function Imovel() {
     getData()
   }, [])
 
-  const fakeImages = [
-    'https://thumbor.forbes.com/thumbor/fit-in/1200x0/filters%3Aformat%28jpg%29/https%3A%2F%2Fspecials-images.forbesimg.com%2Fimageserve%2F1026205392%2F0x0.jpg',
-    'https://assets0.biggerpockets.com/uploads/wordpress_blog_post/image/9335/featured_student-housing-empire.jpg',
-    'https://media.gazetadopovo.com.br/haus/2019/10/decoracao-de-quarto-com-cores-neutras-13-768x473-3cf2c1b0.jpg',
-    'https://casa.abril.com.br/wp-content/uploads/2019/12/2-5-dicas-para-iluminar-seu-banheiro-com-charme-e-funcionalidade.jpg?quality=95&strip=info&w=1024',
-    'https://images.homify.com/images/a_0,c_fill,f_auto,h_900,q_auto,w_1920/v1506348695/p/photo/image/2241997/GRP_up_over_2/fotos-de-garagens-e-ediculas-classico-por-wessex-garage-doors.jpg',
-  ]
-
   return (
     <>
       <HeaderFront />
       {data ? (
         <>
-          <HeroImovel images={fakeImages} />
+          <HeroImovel images={data.imagens} />
           <SiteContainer>
             <Content>
               <Main titulo={data.titulo} descricao={data.descricao} />

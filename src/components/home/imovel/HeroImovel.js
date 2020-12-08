@@ -7,17 +7,17 @@ const Wrapper = styled.section`
 
   > div {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   }
 `
 
 export default function HeroImovel({ images }) {
   return (
     <Wrapper>
-      {/* TODO finalizar carrossel de fotos (e consumir as fotos certas) */}
+      {/* TODO finalizar carrossel de fotos */}
       <div>
         {images.map((img, i) => {
-          return <img key={i} src={img} alt="" />
+          return <img key={img} src={img} alt="" />
         })}
       </div>
     </Wrapper>

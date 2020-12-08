@@ -7,11 +7,9 @@ import IcoGaragem from '../../icons/Garagem'
 import IcoArea from '../../icons/Area'
 
 const Wrapper = styled.div`
-  margin-top: auto;
-  padding-right: 1em;
+  padding-right: 0.5rem;
   max-width: 300px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-top: auto;
 
   display: flex;
   justify-content: space-between;
@@ -22,7 +20,7 @@ const Wrapper = styled.div`
     align-items: center;
     font-size: 0.9rem;
     color: var(--gray3);
-    margin-right: 0.5rem;
+    margin-right: 0.75rem;
   }
 
   svg {
@@ -31,9 +29,9 @@ const Wrapper = styled.div`
   }
 `
 
-export default function DetailsIcons({ data }) {
+export default function DetailsIcons({ data, style = {} }) {
   return (
-    <Wrapper>
+    <Wrapper style={style}>
       <span>
         <IcoQuartos />
         {data.dormitorios}{' '}
