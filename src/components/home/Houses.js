@@ -34,6 +34,10 @@ const HouseCard = styled(Card)`
   :hover {
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1), 0 0 8px rgba(0, 0, 0, 0.1);
   }
+  :focus-within {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1), 0 0 8px rgba(0, 0, 0, 0.1),
+      inset 0 0 0 1px rgba(0, 0, 0, 0.3);
+  }
 `
 
 const Picture = styled.picture`
@@ -86,7 +90,6 @@ export default function Houses(props) {
           <HouseCard key={`HouseCard-${data.codRef}`}>
             <Link to={`imovel/cod-${data.codRef}`}>
               <Picture>
-                {/* TODO consumir imagem do banco de dados */}
                 <img src={data.imagem} alt="" />
               </Picture>
               <Content>

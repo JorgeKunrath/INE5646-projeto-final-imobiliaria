@@ -19,7 +19,7 @@ const Row = styled.div`
   transition: background-color 0.2s ease;
 
   display: grid;
-  grid-template-columns: 40px 3fr 1fr 1fr 3fr 2fr;
+  grid-template-columns: 40px 3fr 1fr 1fr 3fr 2fr 2fr;
   align-content: center;
   grid-column-gap: 1.5em;
 
@@ -113,36 +113,58 @@ export default function TableHouses({ data, loaded }) {
           <Cell className="aluguel">Aluguel</Cell>
           <Cell>Endereço</Cell>
           <Cell></Cell>
+          <Cell>Atualizado em:</Cell>
         </HeaderRow>
 
         {loaded &&
           data &&
-          data.map(({ imagens, titulo, endereco, status, cod, aluguel }) => (
-            <Row key={cod}>
-              <Cell className="imagem">
-                <img src={imagens[0]} alt="" />
-              </Cell>
-              <Cell className="titulo">
-                <Link to={`/admin/imovel/cod-${cod}`}>{titulo}</Link>
-              </Cell>
-              <Cell className="cod">{cod}</Cell>
-              <Cell className="aluguel">
-                R$&nbsp;
-                {new Number(aluguel)
-                  .toFixed(2)
-                  .toString()
-                  .replace('.', ',')
-                  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, '.')}
-              </Cell>
-              <Cell className="endereco">
-                {endereco.bairro} — {endereco.cidade}
-              </Cell>
-              <Cell className="flags">
-                <span>{endereco.tipo}</span>
-                <span className={status}>{status}</span>
-              </Cell>
-            </Row>
-          ))}
+          data.map(
+            ({
+              imagens,
+              titulo,
+              endereco,
+              status,
+              cod,
+              aluguel,
+              createdAt,
+            }) => (
+              <Row key={cod}>
+                <Cell className="imagem">
+                  <img src={imagens[0]} alt="" />
+                </Cell>
+                <Cell className="titulo">
+                  <Link to={`/admin/imovel/cod-${cod}`}>{titulo}</Link>
+                </Cell>
+                <Cell className="cod">{cod}</Cell>
+                <Cell className="aluguel">
+                  R$&nbsp;
+                  {new Number(aluguel)
+                    .toFixed(2)
+                    .toString()
+                    .replace('.', ',')
+                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, '.')}
+                </Cell>
+                <Cell className="endereco">
+                  {endereco.bairro} — {endereco.cidade}
+                </Cell>
+                <Cell className="flags">
+                  <span>{endereco.tipo}</span>
+                  <span className={status}>{status}</span>
+                </Cell>
+                <Cell>
+                  {createdAt
+                    .toDate()
+                    .toLocaleTimeString([], {
+                      year: 'numeric',
+                      month: 'numeric',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                </Cell>
+              </Row>
+            )
+          )}
 
         {loaded && (!data || data.length == 0) && (
           <ZeroState>
@@ -154,6 +176,9 @@ export default function TableHouses({ data, loaded }) {
 
         {!loaded && (
           <Row>
+            <Cell>
+              <Skeleton />
+            </Cell>
             <Cell>
               <Skeleton />
             </Cell>

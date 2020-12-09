@@ -106,7 +106,7 @@ export default function TableSchedule({ data, loaded }) {
           <Cell>Email</Cell>
           <Cell>Telefone</Cell>
           <Cell>Status</Cell>
-          <Cell>Data</Cell>
+          <Cell>Criado em:</Cell>
         </HeaderRow>
 
         {loaded &&
@@ -124,7 +124,15 @@ export default function TableSchedule({ data, loaded }) {
                 <a href={`tel:${telefone}`}>{telefone}</a>
               </Cell>
               <Cell className="">{status}</Cell>
-              <Cell className="">{createdAt.toDate().toLocaleString()}</Cell>
+              <Cell className="">
+                {createdAt.toDate().toLocaleTimeString([], {
+                  year: 'numeric',
+                  month: 'numeric',
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </Cell>
             </Row>
           ))}
 

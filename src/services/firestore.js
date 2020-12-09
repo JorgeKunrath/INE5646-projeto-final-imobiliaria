@@ -143,6 +143,7 @@ export const getUserHouses = async (setData) => {
     .collection('usuarios')
     .doc(user.uid)
     .collection('imoveis')
+    .orderBy('createdAt', 'desc')
     .get()
   const data = snapshot.docs.map((doc) => doc.data())
   setData(data)
@@ -157,6 +158,7 @@ export const getSchedulesForUser = async (setData) => {
   const snapshot = await db
     .collection('visitas')
     .where('userUidRef', '==', user.uid)
+    .orderBy('createdAt', 'desc')
     .get()
   const data = snapshot.docs.map((doc) => doc.data())
   setData(data)
