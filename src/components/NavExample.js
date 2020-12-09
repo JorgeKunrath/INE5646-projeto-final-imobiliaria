@@ -6,8 +6,6 @@ export default function NavExample() {
     <nav>
       <Link to="/">Home</Link>
       {' | '}
-      <Link to="/imovel/codigo">Imovel</Link>
-      {' | '}
       <Link to="/admin">Admin</Link>
     </nav>
   )

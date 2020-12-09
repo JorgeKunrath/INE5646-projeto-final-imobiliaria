@@ -7,13 +7,20 @@ const FooterStyled = styled.footer`
   padding: 1em 0;
   text-align: center;
   margin-top: auto;
+  color: rgba(0, 0, 0, 0.2);
+  a {
+    color: rgba(0, 0, 0, 0.2);
+  }
 `
 
 export default function Footer() {
   return (
     <FooterStyled>
-      rodapé aaaquiiii
       <NavExample />
+      <small>
+        Este site é um projeto acadêmico. As informações aqui contidas não
+        condizem com a realidade.
+      </small>
     </FooterStyled>
   )
 }
