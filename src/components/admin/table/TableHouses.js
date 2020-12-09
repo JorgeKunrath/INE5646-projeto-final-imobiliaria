@@ -10,9 +10,11 @@ const Table = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.1);
   margin: 2rem 0;
   font-size: 0.95rem;
+  overflow: auto;
 `
 
 const Row = styled.div`
+  min-width: 1100px;
   position: relative;
   background-color: white;
   padding: 0.75rem;
@@ -66,7 +68,8 @@ const Cell = styled.div`
   &.titulo {
   }
 
-  &.aluguel {
+  &.aluguel,
+  &.cod {
     text-align: right;
   }
 
@@ -109,7 +112,7 @@ export default function TableHouses({ data, loaded }) {
         <HeaderRow>
           <Cell></Cell>
           <Cell>Título</Cell>
-          <Cell>Código</Cell>
+          <Cell className="cod">Código</Cell>
           <Cell className="aluguel">Aluguel</Cell>
           <Cell>Endereço</Cell>
           <Cell></Cell>
@@ -152,15 +155,13 @@ export default function TableHouses({ data, loaded }) {
                   <span className={status}>{status}</span>
                 </Cell>
                 <Cell>
-                  {createdAt
-                    .toDate()
-                    .toLocaleTimeString([], {
-                      year: 'numeric',
-                      month: 'numeric',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
+                  {createdAt.toDate().toLocaleTimeString([], {
+                    year: 'numeric',
+                    month: 'numeric',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
                 </Cell>
               </Row>
             )

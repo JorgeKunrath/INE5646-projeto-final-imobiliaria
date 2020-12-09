@@ -11,16 +11,18 @@ const Table = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.1);
   margin: 2rem 0;
   font-size: 0.95rem;
+  overflow: auto;
 `
 
 const Row = styled.div`
+  min-width: 900px;
   position: relative;
   background-color: white;
   padding: 0.75rem;
   transition: background-color 0.2s ease;
 
   display: grid;
-  grid-template-columns: 1fr 3fr 2fr 2fr 1fr 2fr;
+  grid-template-columns: 1fr 2fr 2fr 2fr 1fr 1fr;
   align-content: center;
   grid-column-gap: 1.5em;
 
@@ -125,12 +127,10 @@ export default function TableSchedule({ data, loaded }) {
               </Cell>
               <Cell className="">{status}</Cell>
               <Cell className="">
-                {createdAt.toDate().toLocaleTimeString([], {
+                {createdAt.toDate().toLocaleDateString([], {
                   year: 'numeric',
                   month: 'numeric',
                   day: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit',
                 })}
               </Cell>
             </Row>
