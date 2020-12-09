@@ -123,6 +123,7 @@ export const getImovel = async (cod) => {
   return data
 }
 
+// user that show interest in a house
 export const submitSchedule = (object) => {
   db.collection('visitas')
     .add({
@@ -131,6 +132,21 @@ export const submitSchedule = (object) => {
     })
     .then(() => console.log('submitSchedule: "schedule" added to Firebase'))
   return null
+}
+
+// get all houses for current user
+export const getUserHouses = async (setData) => {
+  // Get user
+  let user = firebase.auth().currentUser
+
+  const snapshot = await db
+    .collection('usuarios')
+    .doc(user.uid)
+    .collection('imoveis')
+    .get()
+  const data = snapshot.docs.map((doc) => doc.data())
+  setData(data)
+  return data
 }
 
 // ========================================================================
