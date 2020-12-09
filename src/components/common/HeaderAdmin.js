@@ -56,7 +56,7 @@ export default function HeaderAdmin() {
           </Link>
           <LinksWrapper>
             <Link to="/admin">Imóveis</Link>
-            <Link to="/admin/reservas">Reservas</Link>
+            <Link to="/admin/agendamentos">Agendamentos</Link>
           </LinksWrapper>
           <Link to="/admin/imovel/novo" className="cta">
             Adicionar Imóvel

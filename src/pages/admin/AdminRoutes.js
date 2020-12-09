@@ -11,7 +11,7 @@ export default function AdminRoutes() {
   return (
     <Routes>
       <Route path="" element={<AdmHome />} />
-      <Route path="/reservas" element={<AdmReservas />} />
+      <Route path="/agendamentos" element={<AdmReservas />} />
       <Route path="/imovel/*" element={<AdmImovel />} />
       <Route path="/admin/*" element={<Error404 />} />
     </Routes>

@@ -149,6 +149,20 @@ export const getUserHouses = async (setData) => {
   return data
 }
 
+// get all schedules for current user
+export const getSchedulesForUser = async (setData) => {
+  // Get user
+  let user = firebase.auth().currentUser
+
+  const snapshot = await db
+    .collection('visitas')
+    .where('userUidRef', '==', user.uid)
+    .get()
+  const data = snapshot.docs.map((doc) => doc.data())
+  setData(data)
+  return data
+}
+
 // ========================================================================
 // ========================================================================
 // ========================================================================
