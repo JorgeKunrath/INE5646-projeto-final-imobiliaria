@@ -48,41 +48,11 @@ em algum momento melhorar o código --QUE MOMENTO EIN???
 
 */
 
-export default function AdmFormImovel() {
-  const defaultValues = {
-    cod: '0000',
-    titulo: 'Casa com 2 quartos aconchegante',
-    inscricaoMunicipal: '0004.5.2.455.255',
-
-    dormitorios: 2,
-    banheiros: 1,
-    vagas: 0,
-    area: 140,
-
-    aluguel: 1400.5,
-    status: 'disponível',
-
-    cep: '88000-100',
-    estado: 'Santa Catarina',
-    cidade: 'Florianópolis',
-    bairro: 'Centro',
-    rua: 'Rua Fulano de Tal',
-    tipo: 'casa',
-    numero: '01',
-    complemento: '402',
-
-    descricao:
-      'descrição do imóvel aidosjaoiwjaiosdfji oaejsfio asjdfio ajsfio jasoidfh aisufh iuasdfhj iuashf iuasjdfiu\n\nNOVALINHAAQUI ahsfiuashdfiu ahsfiu ajsdfiu ajweifu hasdfiu hasg hasdfiu jasgiu jhasdfio hasegio hasdiofj asih iaospdfh aioseh iaosdfh aisoeth iuasdfj **BOLD?** eikfn aslkdjfn alskjnsalkdfh asieofh asgh pasdfih aphsfipuv ihyahsudkf nasiruog nasuich napriusg bnsaupicn parytbn asuinc uaipsrh uasgh uapsfh puiashrg ipuashf iuasf',
-  }
-
+export default function AdmFormImovel({ defaultValues }) {
   // --------------------
   // GLOBAL
   // --------------------
   const [loading, setLoading] = useState(false)
-
-  React.useEffect(() => {
-    console.log({ loading })
-  }, [loading])
 
   // --------------------
   // GET IMAGE
@@ -117,7 +87,6 @@ export default function AdmFormImovel() {
     if (images.length > 0) {
       const arrayFiles = Array.from(images)
       arrayFiles.forEach((image) => {
-        // console.log('Imagem que vai ser feito upload', image)
         uploadOneImageToCloudStorageAndSetUrl(image, setUrl)
       })
     }
@@ -126,7 +95,6 @@ export default function AdmFormImovel() {
   // pega cada URL em específico e agrupa num array (enviado para o db)
   React.useEffect(() => {
     if (url) {
-      console.log({ url })
       setUrls(() => [...urls, url])
     }
     setLoading(false)
@@ -140,10 +108,9 @@ export default function AdmFormImovel() {
   const onSubmit = (data) => {
     setLoading(true)
 
-    console.log({ data })
-
-    const fakeCod = Math.floor(Math.random() * (9999 - 1 + 1)) + 1
-    console.log({ fakeCod })
+    const newFakeCod = Math.floor(Math.random() * (9999 - 1 + 1)) + 1
+    const cod = defaultValues.cod || newFakeCod
+    console.log('submited:', { cod })
 
     // simplify the use
     const {
@@ -171,7 +138,7 @@ export default function AdmFormImovel() {
     } = data
 
     const databaseSchema = {
-      // cod vai pela request por enquanto
+      cod,
       status,
       titulo,
       inscricaoMunicipal,
@@ -198,7 +165,7 @@ export default function AdmFormImovel() {
     }
 
     const snippetDatabaseSchema = {
-      // cod vai pela request por enquanto
+      cod,
       status,
       titulo,
       detalhes: {
@@ -221,10 +188,9 @@ export default function AdmFormImovel() {
     console.log({ snippetDatabaseSchema })
 
     // send data to firestore
-    submitImovel(databaseSchema, snippetDatabaseSchema, fakeCod, setLoading)
+    // TODO fazer com que ele sobrescreva caso já exista algum cod igual lá, no momento tá duplicando tudo #caos
+    submitImovel(databaseSchema, snippetDatabaseSchema, setLoading)
   }
-
-  console.log({ errors })
 
   return (
     <SiteContainer>

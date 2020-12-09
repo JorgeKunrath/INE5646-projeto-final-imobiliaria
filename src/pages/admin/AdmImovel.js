@@ -1,5 +1,7 @@
 import React from 'react'
+import { Link, useLocation } from 'react-router-dom'
 
+import { getImovel } from '../../services/firestore'
 import HeaderAdmin from '../../components/common/HeaderAdmin'
 import Footer from '../../components/common/Footer'
 // import AdmFormExample from '../../components/AdmFormExample'
@@ -7,28 +9,104 @@ import AdmFormImovel from '../../components/admin/form/AdmFormImovel'
 import SiteContainer from '../../components/common/SiteContainer'
 
 export default function AdmImovel() {
-  /*
-    - utilizar o negócio do routes pra ler url e buscar o "cod"
-      TRUE:  - acessa contexto com os dados da aplicação e selecoina a parte q bate com o "cod"
-             - passa os dados pro form
-      FALSE: - informa que é uma entrada nova
+  const [data, setData] = React.useState()
+  const [defaultData, setDefaultData] = React.useState()
 
-    não sei se esse lance de salvar os dados localmente é legal, mt lógica pra ficar atualizando e mantendo em sincronia... (talvez, capaz de ser suave com state)
-    fazer várias requisições, para cada tela e para coisa necessária, aumenta um pouco os custos no firestore e demora mais localmente, mas é mais consistente
-  */
+  const location = useLocation()
+  const isNew = location.pathname.includes('novo')
+  const currentCod = +location.pathname.replace('/admin/imovel/cod-', '')
+
+  // make the request if is edit mode
+  React.useEffect(() => {
+    if (isNew) {
+      setData(false)
+    } else if (!isNaN(currentCod)) {
+      async function getData() {
+        const data = await getImovel(currentCod)
+        setData(data)
+      }
+      getData()
+    } else {
+      console.log('something is wrong with your path')
+    }
+  }, [])
+
+  // define form schema to be populated
+  React.useEffect(() => {
+    console.log({ data })
+    if (data) {
+      const {
+        cod,
+        status,
+        titulo,
+        inscricaoMunicipal,
+        detalhes: { dormitorios, banheiros, vagas, area },
+        aluguel,
+        endereco: {
+          cep,
+          estado,
+          cidade,
+          bairro,
+          rua,
+          tipo,
+          numero,
+          complemento,
+        },
+        descricao,
+      } = data
+
+      const formSchema = {
+        cod,
+        titulo,
+        inscricaoMunicipal,
+
+        dormitorios,
+        banheiros,
+        vagas,
+        area,
+
+        aluguel,
+        status,
+
+        cep,
+        estado,
+        cidade,
+        bairro,
+        rua,
+        tipo,
+        numero,
+        complemento,
+
+        descricao,
+      }
+      setDefaultData(formSchema)
+    }
+  }, [data])
 
   return (
     <>
       <HeaderAdmin />
 
       <SiteContainer>
-        <small>← Voltar</small>
-        <h1>Editar Imóvel</h1>
-        <p>Cod. xxxx</p>
+        <p>
+          <small>
+            <Link
+              to="/admin"
+              style={{ textDecoration: 'none', color: 'unset' }}
+            >
+              ← Voltar
+            </Link>
+          </small>
+        </p>
+        <h1>{isNew ? 'Novo Imóvel' : 'Editar Imóvel'}</h1>
+        {!isNew && defaultData?.cod && <p>Cód. {defaultData?.cod}</p>}
       </SiteContainer>
 
       <main>
-        <AdmFormImovel />
+        {data && !isNew && defaultData && (
+          <AdmFormImovel isNew={isNew} defaultValues={defaultData} />
+        )}
+        {isNew && <AdmFormImovel isNew={isNew} defaultValues={false} />}
       </main>
 
       <Footer />

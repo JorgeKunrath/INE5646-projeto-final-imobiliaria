@@ -46,7 +46,7 @@ export const readTest = async () => {
 /* real things */
 
 // TODO: don't have a way to update yet, just create
-export const submitImovel = (dataPublic, dataSnippet, cod, setLoading) => {
+export const submitImovel = (dataPublic, dataSnippet, setLoading) => {
   // Get a new write batch
   let batch = db.batch()
 
@@ -62,7 +62,6 @@ export const submitImovel = (dataPublic, dataSnippet, cod, setLoading) => {
     .collection('imoveis')
     .doc()
   batch.set(usuarios_imoveis_ref, {
-    cod,
     userUidRef: user.uid,
     ...dataPublic,
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -72,7 +71,6 @@ export const submitImovel = (dataPublic, dataSnippet, cod, setLoading) => {
   // Set the value in imovel_resumo
   let snippet_imovel_ref = db.collection('imoveis_resumo').doc()
   batch.set(snippet_imovel_ref, {
-    codRef: cod,
     userUidRef: user.uid,
     ...dataSnippet,
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
