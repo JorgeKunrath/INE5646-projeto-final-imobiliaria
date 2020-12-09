@@ -21,7 +21,7 @@ const Row = styled.div`
   transition: background-color 0.2s ease;
 
   display: grid;
-  grid-template-columns: 40px 3fr 1fr 1fr 3fr 2fr 2fr;
+  grid-template-columns: 40px 3fr 1fr 1fr 3fr 2fr 1.8fr;
   align-content: center;
   grid-column-gap: 1.5em;
 
@@ -155,12 +155,10 @@ export default function TableHouses({ data, loaded }) {
                   <span className={status}>{status}</span>
                 </Cell>
                 <Cell>
-                  {createdAt.toDate().toLocaleTimeString([], {
+                  {createdAt.toDate().toLocaleDateString([], {
                     year: 'numeric',
                     month: 'numeric',
                     day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
                   })}
                 </Cell>
               </Row>
