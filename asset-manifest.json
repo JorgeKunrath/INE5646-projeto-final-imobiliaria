@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/INE5646-projeto-final-imobiliaria/static/css/main.153f0e0d.chunk.css",
-    "main.js": "/INE5646-projeto-final-imobiliaria/static/js/main.554bc253.chunk.js",
-    "main.js.map": "/INE5646-projeto-final-imobiliaria/static/js/main.554bc253.chunk.js.map",
+    "main.css": "/INE5646-projeto-final-imobiliaria/static/css/main.83948e33.chunk.css",
+    "main.js": "/INE5646-projeto-final-imobiliaria/static/js/main.51c09615.chunk.js",
+    "main.js.map": "/INE5646-projeto-final-imobiliaria/static/js/main.51c09615.chunk.js.map",
     "runtime-main.js": "/INE5646-projeto-final-imobiliaria/static/js/runtime-main.35ab9636.js",
     "runtime-main.js.map": "/INE5646-projeto-final-imobiliaria/static/js/runtime-main.35ab9636.js.map",
-    "static/js/2.347f5e69.chunk.js": "/INE5646-projeto-final-imobiliaria/static/js/2.347f5e69.chunk.js",
-    "static/js/2.347f5e69.chunk.js.map": "/INE5646-projeto-final-imobiliaria/static/js/2.347f5e69.chunk.js.map",
+    "static/js/2.5a0ef858.chunk.js": "/INE5646-projeto-final-imobiliaria/static/js/2.5a0ef858.chunk.js",
+    "static/js/2.5a0ef858.chunk.js.map": "/INE5646-projeto-final-imobiliaria/static/js/2.5a0ef858.chunk.js.map",
     "index.html": "/INE5646-projeto-final-imobiliaria/index.html",
-    "static/css/main.153f0e0d.chunk.css.map": "/INE5646-projeto-final-imobiliaria/static/css/main.153f0e0d.chunk.css.map",
-    "static/js/2.347f5e69.chunk.js.LICENSE.txt": "/INE5646-projeto-final-imobiliaria/static/js/2.347f5e69.chunk.js.LICENSE.txt"
+    "static/css/main.83948e33.chunk.css.map": "/INE5646-projeto-final-imobiliaria/static/css/main.83948e33.chunk.css.map",
+    "static/js/2.5a0ef858.chunk.js.LICENSE.txt": "/INE5646-projeto-final-imobiliaria/static/js/2.5a0ef858.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.35ab9636.js",
-    "static/js/2.347f5e69.chunk.js",
-    "static/css/main.153f0e0d.chunk.css",
-    "static/js/main.554bc253.chunk.js"
+    "static/js/2.5a0ef858.chunk.js",
+    "static/css/main.83948e33.chunk.css",
+    "static/js/main.51c09615.chunk.js"
   ]
 }
