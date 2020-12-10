@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import SiteContainer from '../../common/SiteContainer'
+import IcoWhatsapp from '../../../icons/Whatsapp'
 
 const Table = styled.div`
   border-radius: 5px;
@@ -22,7 +23,7 @@ const Row = styled.div`
   transition: background-color 0.2s ease;
 
   display: grid;
-  grid-template-columns: 1fr 2fr 2fr 2fr 1fr 1fr;
+  grid-template-columns: 1fr 2fr 2fr 2fr 1fr;
   align-content: center;
   grid-column-gap: 1.5em;
 
@@ -99,6 +100,21 @@ export default function TableSchedule({ data, loaded }) {
   console.log('fui chamado')
   console.log({ data })
 
+  function telToZap(tel) {
+    let zap = tel.trim().replace(/[\(\)\-\s  *]/gi, '')
+    if (zap.length == 8) {
+      zap = '9' + zap
+    }
+    if (zap.length == 9) {
+      zap = '48' + zap
+    }
+    if (zap.length == 11) {
+      zap = '55' + zap
+    }
+    console.log({ zap })
+    return zap
+  }
+
   return (
     <SiteContainer>
       <Table>
@@ -107,7 +123,7 @@ export default function TableSchedule({ data, loaded }) {
           <Cell>Nome</Cell>
           <Cell>Email</Cell>
           <Cell>Telefone</Cell>
-          <Cell>Status</Cell>
+          {/* <Cell>Status</Cell> */}
           <Cell>Criado em:</Cell>
         </HeaderRow>
 
@@ -123,9 +139,17 @@ export default function TableSchedule({ data, loaded }) {
                 <a href={`mailto:${email}`}>{email}</a>
               </Cell>
               <Cell className="">
+                <a
+                  href={`https://wa.me/${telToZap(telefone)}`}
+                  target="_blank"
+                  rel="nofollow"
+                  style={{ padding: '0.25em', marginRight: '0.25em' }}
+                >
+                  <IcoWhatsapp size={14} style={{ fill: 'var(--green)' }} />
+                </a>
                 <a href={`tel:${telefone}`}>{telefone}</a>
               </Cell>
-              <Cell className="">{status}</Cell>
+              {/* <Cell className="">{status}</Cell> */}
               <Cell className="">
                 {createdAt.toDate().toLocaleDateString([], {
                   year: 'numeric',
