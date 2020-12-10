@@ -23,9 +23,6 @@ export default function HousesWrapper() {
     async function getData() {
       const databaseResponseJson = await getImoveisResumo()
       setRawData(databaseResponseJson)
-
-      // provisório, ou talvez o valor inicial possa ser isso mesmo
-      setFilteredData(databaseResponseJson)
     }
     getData()
   }, [])

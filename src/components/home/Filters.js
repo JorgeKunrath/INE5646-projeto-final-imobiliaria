@@ -1,105 +1,36 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import Slider from '@material-ui/core/Slider'
 
 import Card from '../common/Card'
+import {
+  Aside,
+  FilterInputs,
+  InputStyled,
+  Flags,
+  Sliders,
+  SliderLabel,
+} from './Filters_styles'
 
 import IcoQuartos from '../../icons/Quartos'
 import IcoBanheiros from '../../icons/Banheiros'
 import IcoGaragem from '../../icons/Garagem'
 import IcoArea from '../../icons/Area'
 
-const Aside = styled.aside``
-
-const FilterInputs = styled.div`
-  label {
-    display: flex;
-    flex-flow: column;
-    margin-bottom: 1em;
-    color: var(--gray3);
-    min-width: 0;
-  }
-
-  hr {
-    margin-bottom: 1em;
-    border: none;
-    border-bottom: 1px solid #e0e0e0;
-  }
-`
-
-const InputStyled = styled.input`
-  width: unset;
-  max-width: auto;
-  margin-top: 0.25em;
-  font-size: inherit;
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  padding: 0.5em 0.75em;
-  color: var(--gray3);
-  border: ${(props) =>
-    props.error ? '1px solid #eb5757' : '1px solid #e0e0e0'};
-  box-shadow: ${(props) =>
-    props.error ? 'inset 0 0 0 1px #eb5757' : 'inset 0 0 0 0 transparent'};
-  transition: box-shadow 0.2s ease, border 0.2s ease;
-
-  :focus {
-    outline: none;
-  }
-
-  &.textarea {
-    resize: vertical;
-  }
-`
-
-const Flags = styled.div`
-  span {
-    display: inline-block;
-    font-size: 0.9em;
-    line-height: 1;
-    margin-right: 0.5rem;
-    margin-bottom: 0.5rem;
-    background-color: var(--gray6);
-    padding: 0.25em 0.5em 0.4em;
-    border-radius: 5px;
-    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-
-    &.selected {
-      background-color: var(--orange);
-      color: white;
-    }
-  }
-`
-
-const Sliders = styled.div`
-  margin-top: 1rem;
-  padding: 0 0.25em;
-  .MuiSlider-root {
-    display: block;
-    max-width: 98%;
-    margin: 0 auto;
-  }
-  .MuiSlider-colorPrimary {
-    color: var(--orange);
-  }
-`
-
-const SliderLabel = styled.div`
-  display: flex;
-  align-items: center;
-  svg {
-    margin-right: 0.5rem;
-    fill: var(--orange);
-  }
-`
-
-export default function Filters(props) {
-  const { rawData, filteredData, setFilteredData, style = {} } = props
-
+export default function Filters({ rawData, filteredData, setFilteredData }) {
   // every time that is made a request
   React.useEffect(() => {
+    console.log(
+      'EU MUDEEEEEIIII ------------------------------------------------------------------------'
+    )
     setFilteredData(rawData)
   }, [rawData])
+
+  React.useEffect(() => {
+    if (filteredData) {
+      console.log({ rawData })
+      console.log({ filteredData })
+    }
+  }, [filteredData])
 
   //
   //
@@ -113,24 +44,24 @@ export default function Filters(props) {
 
   // isso tem que vir da informação q existe de fato
   let initialRanges = {
-    quartos: [1, 8],
-    banheiros: [2, 5],
-    garagem: [0, 3],
-    area: [40, 300],
-    aluguel: [720, 3000],
+    quartos: [0, 8],
+    banheiros: [0, 5],
+    garagem: [0, 5],
+    area: [10, 300],
+    aluguel: [100, 3000],
   }
 
   const [vQuartos, setVQuartos] = useState(initialRanges['quartos'])
   function handleQuartos(e, value) {
     setVQuartos(value)
-    console.log({ value })
+    // console.log({ value })
   }
 
   // ----------------------------------------
   const [vBanheiros, setVBanheiros] = useState(initialRanges['banheiros'])
   function handleBanheiros(e, value) {
     setVBanheiros(value)
-    console.log({ value })
+    // console.log({ value })
   }
 
   // ----------------------------------------
@@ -144,23 +75,65 @@ export default function Filters(props) {
   const [vArea, setVArea] = useState(initialRanges['area'])
   function handleArea(e, value) {
     setVArea(value)
-    console.log({ value })
+    // console.log({ value })
   }
 
   // ----------------------------------------
   const [vAluguel, setVAluguel] = useState(initialRanges['aluguel'])
   function handleAluguel(e, value) {
     setVAluguel(value)
-    console.log({ value })
+    // console.log({ value })
   }
 
   // ------------------------
   // LÓGICA ...
   // todo
 
+  React.useEffect(() => {
+    console.log(
+      '==================================================== RODANDO O USE EFFECT DE FILTER ===================================================================================================================='
+    )
+
+    console.table([vQuartos, vBanheiros, vGaragem, vArea, vAluguel])
+
+    if (rawData) {
+      // manipulate
+      console.log('raw data aaaaaaa', { rawData })
+      let newData = rawData.filter((house) => {
+        console.log({ house })
+
+        console.table([
+          +house.detalhes.dormitorios,
+          +house.detalhes.banheiros,
+          +house.detalhes.vagas,
+          +house.detalhes.area,
+          +house.aluguel,
+        ])
+
+        return (
+          +house.detalhes.dormitorios >= vQuartos[0] &&
+          +house.detalhes.dormitorios <= vQuartos[1] &&
+          +house.detalhes.banheiros >= vBanheiros[0] &&
+          +house.detalhes.banheiros <= vBanheiros[1] &&
+          +house.detalhes.vagas >= vGaragem[0] &&
+          +house.detalhes.vagas <= vGaragem[1] &&
+          +house.detalhes.area >= vArea[0] &&
+          +house.detalhes.area <= vArea[1] &&
+          +house.aluguel >= vAluguel[0] &&
+          +house.aluguel <= vAluguel[1]
+        )
+      })
+      console.log('RESULTADO -----------')
+      console.log({ newData })
+
+      // set
+      setFilteredData(newData)
+    }
+  }, [vQuartos, vBanheiros, vGaragem, vArea, vAluguel])
+
   return (
     <Aside>
-      <Card style={{ padding: '0.5em', ...style }}>
+      <Card style={{ padding: '0.5em' }}>
         <FilterInputs>
           <label>
             {/* cidade */}
