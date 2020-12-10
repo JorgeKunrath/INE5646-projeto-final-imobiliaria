@@ -215,7 +215,8 @@ export default function Filters({ rawData, filteredData, setFilteredData }) {
                     <IcoArea />
                     {vArea[0] === vArea[1]
                       ? `${vArea[0]}`
-                      : `${vArea[0]} — ${vArea[1]}`}
+                      : `${vArea[0]} — ${vArea[1]}`}{' '}
+                    m²
                   </SliderLabel>
                   <Slider
                     value={vArea}
