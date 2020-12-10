@@ -82,7 +82,6 @@ const Content = styled.div`
 `
 
 export default function Houses(props) {
-  console.log({ props })
   return (
     <Main>
       {props.data ? (
