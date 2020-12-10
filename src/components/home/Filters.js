@@ -77,8 +77,7 @@ export default function Filters({ rawData, filteredData, setFilteredData }) {
   // FILTERS STUFF:
 
   // ------------------------
-  // LÓGICA ...
-  // todo
+  // LÓGICA
 
   React.useEffect(() => {
     console.log('=========== RODANDO O USE EFFECT DE FILTER ===========')
