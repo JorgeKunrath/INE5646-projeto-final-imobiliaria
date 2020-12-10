@@ -17,20 +17,57 @@ import IcoGaragem from '../../icons/Garagem'
 import IcoArea from '../../icons/Area'
 
 export default function Filters({ rawData, filteredData, setFilteredData }) {
+  // ------------------------
+  // CONTROLES
+
+  const [initialRanges, setInitialRanges] = useState(false)
+
+  const [vQuartos, setVQuartos] = useState()
+  const [vBanheiros, setVBanheiros] = useState()
+  const [vGaragem, setVGaragem] = useState()
+  const [vArea, setVArea] = useState()
+  const [vAluguel, setVAluguel] = useState()
+
   // every time that is made a request
   React.useEffect(() => {
-    console.log(
-      'EU MUDEEEEEIIII ------------------------------------------------------------------------'
-    )
-    setFilteredData(rawData)
+    if (rawData) {
+      let base = {
+        dormitorios: [],
+        banheiros: [],
+        vagas: [],
+        area: [],
+        aluguel: [],
+      }
+      rawData.forEach((house) => {
+        console.log({ house })
+        base.dormitorios.push(house.detalhes.dormitorios)
+        base.banheiros.push(house.detalhes.banheiros)
+        base.vagas.push(house.detalhes.vagas)
+        base.area.push(house.detalhes.area)
+        base.aluguel.push(house.aluguel)
+      })
+      let minmax = {
+        quartos: [Math.min(...base.dormitorios), Math.max(...base.dormitorios)],
+        banheiros: [Math.min(...base.banheiros), Math.max(...base.banheiros)],
+        garagem: [Math.min(...base.vagas), Math.max(...base.vagas)],
+        area: [Math.min(...base.area), Math.max(...base.area)],
+        aluguel: [Math.min(...base.aluguel), Math.max(...base.aluguel)],
+      }
+      setInitialRanges(minmax)
+      setFilteredData(rawData)
+    }
   }, [rawData])
 
+  // set initial ranges for each slider
   React.useEffect(() => {
-    if (filteredData) {
-      console.log({ rawData })
-      console.log({ filteredData })
+    if (initialRanges) {
+      setVQuartos(initialRanges['quartos'])
+      setVBanheiros(initialRanges['banheiros'])
+      setVGaragem(initialRanges['garagem'])
+      setVArea(initialRanges['area'])
+      setVAluguel(initialRanges['aluguel'])
     }
-  }, [filteredData])
+  }, [initialRanges])
 
   //
   //
@@ -40,65 +77,19 @@ export default function Filters({ rawData, filteredData, setFilteredData }) {
   // FILTERS STUFF:
 
   // ------------------------
-  // CONTROLES
-
-  // isso tem que vir da informação q existe de fato
-  let initialRanges = {
-    quartos: [0, 8],
-    banheiros: [0, 5],
-    garagem: [0, 5],
-    area: [10, 300],
-    aluguel: [100, 3000],
-  }
-
-  const [vQuartos, setVQuartos] = useState(initialRanges['quartos'])
-  function handleQuartos(e, value) {
-    setVQuartos(value)
-    // console.log({ value })
-  }
-
-  // ----------------------------------------
-  const [vBanheiros, setVBanheiros] = useState(initialRanges['banheiros'])
-  function handleBanheiros(e, value) {
-    setVBanheiros(value)
-    // console.log({ value })
-  }
-
-  // ----------------------------------------
-  const [vGaragem, setVGaragem] = useState(initialRanges['garagem'])
-  function handleGaragem(e, value) {
-    setVGaragem(value)
-    console.log({ value })
-  }
-
-  // ----------------------------------------
-  const [vArea, setVArea] = useState(initialRanges['area'])
-  function handleArea(e, value) {
-    setVArea(value)
-    // console.log({ value })
-  }
-
-  // ----------------------------------------
-  const [vAluguel, setVAluguel] = useState(initialRanges['aluguel'])
-  function handleAluguel(e, value) {
-    setVAluguel(value)
-    // console.log({ value })
-  }
-
-  // ------------------------
   // LÓGICA ...
   // todo
 
   React.useEffect(() => {
-    console.log(
-      '==================================================== RODANDO O USE EFFECT DE FILTER ===================================================================================================================='
-    )
+    console.log('=========== RODANDO O USE EFFECT DE FILTER ===========')
 
     console.table([vQuartos, vBanheiros, vGaragem, vArea, vAluguel])
 
-    if (rawData) {
+    if (filteredData && initialRanges) {
+      console.log('-----------')
+      console.log({ filteredData })
+      console.log('-----------')
       // manipulate
-      console.log('raw data aaaaaaa', { rawData })
       let newData = rawData.filter((house) => {
         console.log({ house })
 
@@ -135,8 +126,9 @@ export default function Filters({ rawData, filteredData, setFilteredData }) {
     <Aside>
       <Card style={{ padding: '0.5em' }}>
         <FilterInputs>
-          <label>
-            {/* cidade */}
+          <p style={{ margin: 0, color: 'var(--gray3)' }}>Filtros</p>
+          <hr />
+          {/* <label>
             <InputStyled as="select" name="cidade" title="Filtrar Cidades">
               <option value="noFilter">Cidade</option>
               <option value="disponível">
@@ -145,7 +137,6 @@ export default function Filters({ rawData, filteredData, setFilteredData }) {
             </InputStyled>
           </label>
           <label>
-            {/* cidade */}
             <InputStyled as="select" name="bairro" title="Filtrar Bairros">
               <option value="noFilter">Bairros</option>
               <option value="value">
@@ -155,106 +146,118 @@ export default function Filters({ rawData, filteredData, setFilteredData }) {
             <div>bairros selecionados vão aqui com botão pra deselecionar</div>
           </label>
 
-          <hr />
-
+          <hr /> */}
           {/* <Flags>
             <span className="selected">casa</span>
             <span className="">apartamento</span>
           </Flags> */}
-
-          <Sliders>
-            <label>
-              <SliderLabel>
-                <IcoQuartos />
-                {vQuartos[0] === vQuartos[1]
-                  ? `${vQuartos[0]}`
-                  : `${vQuartos[0]} — ${vQuartos[1]}`}
-              </SliderLabel>
-              <Slider
-                value={vQuartos}
-                onChange={handleQuartos}
-                min={initialRanges['quartos'][0]}
-                max={initialRanges['quartos'][1]}
-                valueLabelDisplay="auto"
-                aria-labelledby="range-e"
-              />
-            </label>
-            <label>
-              <SliderLabel>
-                <IcoBanheiros />
-                {vBanheiros[0] === vBanheiros[1]
-                  ? `${vBanheiros[0]}`
-                  : `${vBanheiros[0]} — ${vBanheiros[1]}`}
-              </SliderLabel>
-              <Slider
-                value={vBanheiros}
-                onChange={handleBanheiros}
-                min={initialRanges['banheiros'][0]}
-                max={initialRanges['banheiros'][1]}
-                valueLabelDisplay="auto"
-                aria-labelledby="range-e"
-              />
-            </label>
-            <label>
-              <SliderLabel>
-                <IcoGaragem />
-                {vGaragem[0] === vGaragem[1]
-                  ? `${vGaragem[0]}`
-                  : `${vGaragem[0]} — ${vGaragem[1]}`}
-              </SliderLabel>
-              <Slider
-                value={vGaragem}
-                onChange={handleGaragem}
-                min={initialRanges['garagem'][0]}
-                max={initialRanges['garagem'][1]}
-                valueLabelDisplay="auto"
-                aria-labelledby="range-e"
-              />
-            </label>
-            <label>
-              <SliderLabel>
-                <IcoArea />
-                {vArea[0] === vArea[1]
-                  ? `${vArea[0]}`
-                  : `${vArea[0]} — ${vArea[1]}`}
-              </SliderLabel>
-              <Slider
-                value={vArea}
-                onChange={handleArea}
-                min={initialRanges['area'][0]}
-                max={initialRanges['area'][1]}
-                step={5}
-                valueLabelDisplay="auto"
-                aria-labelledby="range-e"
-              />
-            </label>
-            <label>
-              <SliderLabel>
-                <span
-                  style={{
-                    fontSize: '1.2rem',
-                    lineHeight: '1',
-                    color: 'var(--orange)',
-                    marginRight: '0.5rem',
-                  }}
-                >
-                  R$
-                </span>
-                {vAluguel[0] === vAluguel[1]
-                  ? `${vAluguel[0]}`
-                  : `${vAluguel[0]} — ${vAluguel[1]}`}
-              </SliderLabel>
-              <Slider
-                value={vAluguel}
-                onChange={handleAluguel}
-                min={initialRanges['aluguel'][0]}
-                max={initialRanges['aluguel'][1]}
-                step={50}
-                valueLabelDisplay="auto"
-                aria-labelledby="range-e"
-              />
-            </label>
-          </Sliders>
+          {initialRanges && (
+            <Sliders>
+              <label>
+                {vQuartos && (
+                  <>
+                    <SliderLabel>
+                      <IcoQuartos />
+                      {vQuartos[0] === vQuartos[1]
+                        ? `${vQuartos[0]}`
+                        : `${vQuartos[0]} — ${vQuartos[1]}`}
+                    </SliderLabel>
+                    <Slider
+                      value={vQuartos}
+                      onChange={(e, v) => setVQuartos(v)}
+                      min={initialRanges['quartos'][0]}
+                      max={initialRanges['quartos'][1]}
+                      valueLabelDisplay="auto"
+                      aria-labelledby="range-e"
+                    />
+                  </>
+                )}
+              </label>
+              {vBanheiros && (
+                <label>
+                  <SliderLabel>
+                    <IcoBanheiros />
+                    {vBanheiros[0] === vBanheiros[1]
+                      ? `${vBanheiros[0]}`
+                      : `${vBanheiros[0]} — ${vBanheiros[1]}`}
+                  </SliderLabel>
+                  <Slider
+                    value={vBanheiros}
+                    onChange={(e, v) => setVBanheiros(v)}
+                    min={initialRanges['banheiros'][0]}
+                    max={initialRanges['banheiros'][1]}
+                    valueLabelDisplay="auto"
+                    aria-labelledby="range-e"
+                  />
+                </label>
+              )}
+              {vGaragem && (
+                <label>
+                  <SliderLabel>
+                    <IcoGaragem />
+                    {vGaragem[0] === vGaragem[1]
+                      ? `${vGaragem[0]}`
+                      : `${vGaragem[0]} — ${vGaragem[1]}`}
+                  </SliderLabel>
+                  <Slider
+                    value={vGaragem}
+                    onChange={(e, v) => setVGaragem(v)}
+                    min={initialRanges['garagem'][0]}
+                    max={initialRanges['garagem'][1]}
+                    valueLabelDisplay="auto"
+                    aria-labelledby="range-e"
+                  />
+                </label>
+              )}
+              {vArea && (
+                <label>
+                  <SliderLabel>
+                    <IcoArea />
+                    {vArea[0] === vArea[1]
+                      ? `${vArea[0]}`
+                      : `${vArea[0]} — ${vArea[1]}`}
+                  </SliderLabel>
+                  <Slider
+                    value={vArea}
+                    onChange={(e, v) => setVArea(v)}
+                    min={initialRanges['area'][0]}
+                    max={initialRanges['area'][1]}
+                    step={5}
+                    valueLabelDisplay="auto"
+                    aria-labelledby="range-e"
+                  />
+                </label>
+              )}
+              {vAluguel && (
+                <label>
+                  <SliderLabel>
+                    <span
+                      style={{
+                        fontSize: '1.2rem',
+                        lineHeight: '1',
+                        color: 'var(--orange)',
+                        marginRight: '0.5rem',
+                      }}
+                    >
+                      R$
+                    </span>
+                    {vAluguel[0] === vAluguel[1]
+                      ? `${vAluguel[0]}`
+                      : `${vAluguel[0]} — ${vAluguel[1]}`}
+                  </SliderLabel>
+                  <Slider
+                    value={vAluguel}
+                    onChange={(e, v) => setVAluguel(v)}
+                    min={initialRanges['aluguel'][0]}
+                    max={initialRanges['aluguel'][1]}
+                    step={50}
+                    valueLabelDisplay="auto"
+                    aria-labelledby="range-e"
+                  />
+                </label>
+              )}
+            </Sliders>
+          )}
         </FilterInputs>
       </Card>
     </Aside>
