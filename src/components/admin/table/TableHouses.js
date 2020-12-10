@@ -88,6 +88,18 @@ const Cell = styled.div`
         background-color: var(--green);
         color: white;
       }
+      &.reservado {
+        background-color: var(--orange);
+        color: white;
+      }
+      &.alugado {
+        background-color: var(--blue);
+        color: white;
+      }
+      &.indisponível {
+        background-color: var(--gray4);
+        color: white;
+      }
     }
   }
 `
