@@ -45,8 +45,8 @@ export const readTest = async () => {
 // ==============
 /* real things */
 
-// TODO: don't have a way to update yet, just create
-export const submitImovel = (dataPublic, dataSnippet, setLoading) => {
+// create a new entry in imoveis and imoveis_resumo
+export const createImovel = (dataPublic, dataSnippet, setLoading) => {
   // Get a new write batch
   let batch = db.batch()
 
@@ -83,6 +83,51 @@ export const submitImovel = (dataPublic, dataSnippet, setLoading) => {
     )
     setLoading(false)
   })
+
+  return null
+}
+
+// update the infos with a ref based in cod
+export const updateImovel = async (
+  databaseSchema,
+  snippetDatabaseSchema,
+  setLoading,
+  cod
+) => {
+  // Get user
+  let user = firebase.auth().currentUser
+
+  // read current doc and then write
+  db.collectionGroup('imoveis')
+    .where('cod', '==', cod)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        console.log(doc.id, ' => ', doc.data())
+        db.doc(`/usuarios/${user.uid}/imoveis/${doc.id}`).set(
+          {
+            ...databaseSchema,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          },
+          { merge: true }
+        )
+      })
+    })
+
+  // find respective snippetDoc and then write in it
+  db.collection('imoveis_resumo')
+    .where('codRef', '==', cod)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        db.doc(`/imoveis_resumo/${doc.id}`).update({
+          ...snippetDatabaseSchema,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        })
+      })
+    })
+
+  setLoading(false)
 
   return null
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { uploadOneImageToCloudStorageAndSetUrl } from '../../../services/firestore'
-import { submitImovel } from '../../../services/firestore'
+import { createImovel, updateImovel } from '../../../services/firestore'
 
 // import { useContext } from 'react'
 // import { AuthContext } from './AuthProvider'
@@ -48,7 +48,7 @@ em algum momento melhorar o código --QUE MOMENTO EIN???
 
 */
 
-export default function AdmFormImovel({ defaultValues }) {
+export default function AdmFormImovel({ defaultValues, isNew }) {
   // --------------------
   // GLOBAL
   // --------------------
@@ -165,7 +165,7 @@ export default function AdmFormImovel({ defaultValues }) {
     }
 
     const snippetDatabaseSchema = {
-      cod,
+      codRef: cod,
       status,
       titulo,
       detalhes: {
@@ -181,15 +181,18 @@ export default function AdmFormImovel({ defaultValues }) {
         tipo,
       },
 
-      imagem: urls[0],
+      imagem: urls[0] || '',
     }
 
     console.log({ databaseSchema })
     console.log({ snippetDatabaseSchema })
 
-    // send data to firestore
-    // TODO fazer com que ele sobrescreva caso já exista algum cod igual lá, no momento tá duplicando tudo #caos
-    submitImovel(databaseSchema, snippetDatabaseSchema, setLoading)
+    if (isNew) {
+      // send data to firestore
+      createImovel(databaseSchema, snippetDatabaseSchema, setLoading)
+    } else {
+      updateImovel(databaseSchema, snippetDatabaseSchema, setLoading, cod)
+    }
   }
 
   return (
@@ -407,7 +410,7 @@ export default function AdmFormImovel({ defaultValues }) {
               type="file"
               name="imagens"
               multiple
-              ref={register({ required: true })}
+              ref={register()}
               error={errors.imagens}
               onChange={handleImageChange}
             />
