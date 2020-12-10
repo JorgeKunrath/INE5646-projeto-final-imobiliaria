@@ -45,8 +45,8 @@ export const readTest = async () => {
 // ==============
 /* real things */
 
-// TODO: don't have a way to update yet, just create
-export const submitImovel = (dataPublic, dataSnippet, cod, setLoading) => {
+// create a new entry in imoveis and imoveis_resumo
+export const createImovel = (dataPublic, dataSnippet, setLoading) => {
   // Get a new write batch
   let batch = db.batch()
 
@@ -62,7 +62,6 @@ export const submitImovel = (dataPublic, dataSnippet, cod, setLoading) => {
     .collection('imoveis')
     .doc()
   batch.set(usuarios_imoveis_ref, {
-    cod,
     userUidRef: user.uid,
     ...dataPublic,
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -72,7 +71,6 @@ export const submitImovel = (dataPublic, dataSnippet, cod, setLoading) => {
   // Set the value in imovel_resumo
   let snippet_imovel_ref = db.collection('imoveis_resumo').doc()
   batch.set(snippet_imovel_ref, {
-    codRef: cod,
     userUidRef: user.uid,
     ...dataSnippet,
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -89,6 +87,56 @@ export const submitImovel = (dataPublic, dataSnippet, cod, setLoading) => {
   return null
 }
 
+// update the infos with a ref based in cod
+export const updateImovel = async (
+  databaseSchema,
+  snippetDatabaseSchema,
+  setLoading,
+  cod
+) => {
+  // Get user
+  let user = firebase.auth().currentUser
+
+  // read current doc and then write
+  db.collectionGroup('imoveis')
+    .where('cod', '==', cod)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        db.doc(`/usuarios/${user.uid}/imoveis/${doc.id}`).set(
+          {
+            ...databaseSchema,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          },
+          { merge: true }
+        )
+      })
+    })
+    .catch(function (error) {
+      console.log('ops... ', error)
+    })
+
+  // find respective snippetDoc and then write in it
+  db.collection('imoveis_resumo')
+    .where('codRef', '==', cod)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        db.doc(`/imoveis_resumo/${doc.id}`).update({
+          ...snippetDatabaseSchema,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        })
+      })
+    })
+    .catch(function (error) {
+      console.log('ops... ', error)
+    })
+
+  setLoading(false)
+
+  return null
+}
+
 // request snippet imoveis
 export const getImoveisResumo = async () => {
   const snapshot = await db
@@ -96,7 +144,6 @@ export const getImoveisResumo = async () => {
     .orderBy('createdAt', 'desc')
     .get()
   const data = snapshot.docs.map((doc) => doc.data())
-  console.log({ data })
   return data
 }
 

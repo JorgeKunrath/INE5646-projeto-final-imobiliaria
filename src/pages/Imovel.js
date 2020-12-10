@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import { useLocation } from 'react-router-dom'
 
 import HeaderFront from '../components/common/HeaderFront'
@@ -8,7 +9,6 @@ import SiteContainer from '../components/common/SiteContainer'
 import HeroImovel from '../components/home/imovel/HeroImovel'
 import Main from '../components/home/imovel/Main'
 import Aside from '../components/home/imovel/Aside'
-import styled from 'styled-components'
 
 const Content = styled.main`
   /* border: 3px solid blue; */

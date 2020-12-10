@@ -104,8 +104,6 @@ const ZeroState = styled.div`
 `
 
 export default function TableHouses({ data, loaded }) {
-  console.log({ data })
-
   return (
     <SiteContainer>
       <Table>
