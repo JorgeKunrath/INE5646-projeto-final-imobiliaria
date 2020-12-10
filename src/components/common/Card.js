@@ -9,10 +9,10 @@ const Div = styled.div`
 `
 
 export default function Card(props) {
-  const styles = props.style || {}
+  const style = props.style || {}
 
   return (
-    <Div className={props.className} style={styles}>
+    <Div className={props.className} style={style}>
       {props.children}
     </Div>
   )
