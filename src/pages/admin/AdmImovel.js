@@ -98,8 +98,7 @@ export default function AdmImovel() {
             </Link>
           </small>
         </p>
-        <h1>{isNew ? 'Novo Imóvel' : 'Editar Imóvel'}</h1>
-        {!isNew && defaultData?.cod && <p>Cód. {defaultData?.cod}</p>}
+        <h1>{isNew ? 'Novo Imóvel' : `Editar Imóvel ${defaultData?.cod}`}</h1>
       </SiteContainer>
 
       <main>

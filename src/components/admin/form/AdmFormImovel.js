@@ -294,13 +294,7 @@ export default function AdmFormImovel({ defaultValues, isNew }) {
 
           <Fieldset inputCount={3}>
             <label>
-              <span>
-                CEP
-                <small style={{ color: 'lightcoral' }}>
-                  {' '}
-                  implementar busca cep
-                </small>
-              </span>
+              <span>CEP</span>
               <InputStyled
                 type="string"
                 name="cep"
@@ -402,10 +396,7 @@ export default function AdmFormImovel({ defaultValues, isNew }) {
 
         <RigthCol>
           <label>
-            <span>
-              Imagens{' '}
-              <small style={{ color: 'turquoise' }}>da de melhorar</small>
-            </span>
+            <span>Imagens</span>
             <InputStyled
               type="file"
               name="imagens"
