@@ -97,7 +97,6 @@ const ZeroState = styled.div`
 `
 
 export default function TableSchedule({ data, loaded }) {
-  console.log('fui chamado')
   console.log({ data })
 
   function telToZap(tel) {

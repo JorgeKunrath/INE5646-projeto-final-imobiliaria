@@ -377,7 +377,7 @@ export default function AdmFormImovel({ defaultValues, isNew }) {
               <InputStyled
                 type="text"
                 name="complemento"
-                ref={register({ required: true })}
+                ref={register()}
                 error={errors.complemento}
               />
             </label>
