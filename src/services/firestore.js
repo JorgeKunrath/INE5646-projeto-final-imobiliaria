@@ -103,7 +103,6 @@ export const updateImovel = async (
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
-        console.log(doc.id, ' => ', doc.data())
         db.doc(`/usuarios/${user.uid}/imoveis/${doc.id}`).set(
           {
             ...databaseSchema,
@@ -112,6 +111,9 @@ export const updateImovel = async (
           { merge: true }
         )
       })
+    })
+    .catch(function (error) {
+      console.log('ops... ', error)
     })
 
   // find respective snippetDoc and then write in it
@@ -126,6 +128,9 @@ export const updateImovel = async (
         })
       })
     })
+    .catch(function (error) {
+      console.log('ops... ', error)
+    })
 
   setLoading(false)
 
@@ -139,7 +144,6 @@ export const getImoveisResumo = async () => {
     .orderBy('createdAt', 'desc')
     .get()
   const data = snapshot.docs.map((doc) => doc.data())
-  console.log({ data })
   return data
 }
 
