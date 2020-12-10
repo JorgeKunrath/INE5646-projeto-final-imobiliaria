@@ -11,27 +11,13 @@ import Main from '../components/home/imovel/Main'
 import Aside from '../components/home/imovel/Aside'
 
 const Content = styled.main`
-  /* border: 3px solid blue; */
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) 300px;
+  grid-gap: 2rem;
   padding: 2rem 0;
 
-  > * {
-    min-width: 250px;
-    :last-child {
-      margin-left: 2em;
-    }
-  }
-
-  @media (max-width: 600px) {
-    flex-direction: column;
-    align-items: stretch;
-    > * {
-      min-width: unset;
-      :last-child {
-        margin-left: 0;
-      }
-    }
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
   }
 `
 
