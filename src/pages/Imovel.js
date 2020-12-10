@@ -14,6 +14,7 @@ const Content = styled.main`
   display: grid;
   grid-template-columns: minmax(200px, 1fr) 300px;
   grid-gap: 2rem;
+  align-items: start;
   padding: 2rem 0;
 
   @media (max-width: 768px) {
