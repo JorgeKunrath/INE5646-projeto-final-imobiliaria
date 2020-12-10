@@ -8,6 +8,7 @@ const Section = styled.section`
   display: grid;
   grid-template-columns: 1;
   grid-gap: 1em;
+  align-items: start;
 
   @media (min-width: 1024px) {
     grid-template-columns: 25% auto;

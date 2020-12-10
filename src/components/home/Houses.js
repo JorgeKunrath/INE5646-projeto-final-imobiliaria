@@ -10,13 +10,13 @@ const Main = styled.main`
   flex-grow: 1;
 
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   grid-gap: 1em;
 
   // Skeleton wrapper - not exactly the <Skeleton>, these are the children
   > span {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     grid-gap: 1em;
   }
 `
