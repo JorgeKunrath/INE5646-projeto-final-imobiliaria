@@ -139,12 +139,23 @@ export const updateImovel = async (
 
 // request snippet imoveis
 export const getImoveisResumo = async () => {
-  const snapshot = await db
+  console.log('Firebase: getImoveisResumo')
+
+  const snapshotDisponivel = await db
     .collection('imoveis_resumo')
+    .where('status', '==', 'disponível')
     .orderBy('createdAt', 'desc')
     .get()
-  const data = snapshot.docs.map((doc) => doc.data())
-  return data
+  const data = snapshotDisponivel.docs.map((doc) => doc.data())
+
+  const snapshotReservado = await db
+    .collection('imoveis_resumo')
+    .where('status', '==', 'reservado')
+    .orderBy('createdAt', 'desc')
+    .get()
+  const data2 = snapshotReservado.docs.map((doc) => doc.data())
+
+  return [...data, ...data2]
 }
 
 // request imovel
