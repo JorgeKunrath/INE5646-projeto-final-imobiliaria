@@ -389,7 +389,7 @@ export default function AdmFormImovel({ defaultValues, isNew }) {
             Descrição
             <InputStyled
               as="textarea"
-              rows="12"
+              rows="16"
               cols="99999999"
               wrap="hard"
               className="textarea"
