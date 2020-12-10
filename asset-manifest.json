@@ -1,20 +1,20 @@
 {
   "files": {
     "main.css": "/INE5646-projeto-final-imobiliaria/static/css/main.83948e33.chunk.css",
-    "main.js": "/INE5646-projeto-final-imobiliaria/static/js/main.82eef197.chunk.js",
-    "main.js.map": "/INE5646-projeto-final-imobiliaria/static/js/main.82eef197.chunk.js.map",
+    "main.js": "/INE5646-projeto-final-imobiliaria/static/js/main.f0e1734a.chunk.js",
+    "main.js.map": "/INE5646-projeto-final-imobiliaria/static/js/main.f0e1734a.chunk.js.map",
     "runtime-main.js": "/INE5646-projeto-final-imobiliaria/static/js/runtime-main.35ab9636.js",
     "runtime-main.js.map": "/INE5646-projeto-final-imobiliaria/static/js/runtime-main.35ab9636.js.map",
-    "static/js/2.d71f0cc9.chunk.js": "/INE5646-projeto-final-imobiliaria/static/js/2.d71f0cc9.chunk.js",
-    "static/js/2.d71f0cc9.chunk.js.map": "/INE5646-projeto-final-imobiliaria/static/js/2.d71f0cc9.chunk.js.map",
+    "static/js/2.5183f0ea.chunk.js": "/INE5646-projeto-final-imobiliaria/static/js/2.5183f0ea.chunk.js",
+    "static/js/2.5183f0ea.chunk.js.map": "/INE5646-projeto-final-imobiliaria/static/js/2.5183f0ea.chunk.js.map",
     "index.html": "/INE5646-projeto-final-imobiliaria/index.html",
     "static/css/main.83948e33.chunk.css.map": "/INE5646-projeto-final-imobiliaria/static/css/main.83948e33.chunk.css.map",
-    "static/js/2.d71f0cc9.chunk.js.LICENSE.txt": "/INE5646-projeto-final-imobiliaria/static/js/2.d71f0cc9.chunk.js.LICENSE.txt"
+    "static/js/2.5183f0ea.chunk.js.LICENSE.txt": "/INE5646-projeto-final-imobiliaria/static/js/2.5183f0ea.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.35ab9636.js",
-    "static/js/2.d71f0cc9.chunk.js",
+    "static/js/2.5183f0ea.chunk.js",
     "static/css/main.83948e33.chunk.css",
-    "static/js/main.82eef197.chunk.js"
+    "static/js/main.f0e1734a.chunk.js"
   ]
 }
