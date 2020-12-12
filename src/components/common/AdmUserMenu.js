@@ -121,7 +121,7 @@ export default function AdmUserMenu({ signOut }) {
           </Modal>
         )}
       </MenuWrapper>
-      {isOpen && <Backdrop onClick={() => setIsOpen((isOpen) => !isOpen)} />}
+      {isOpen && <Backdrop onClick={() => setIsOpen(false)} />}
     </>
   )
 }
