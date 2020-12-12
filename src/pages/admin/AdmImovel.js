@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 import { getImovel } from '../../services/firestore'
-import HeaderAdmin from '../../components/common/HeaderAdmin'
-import Footer from '../../components/common/Footer'
 // import AdmFormExample from '../../components/AdmFormExample'
 import AdmFormImovel from '../../components/admin/form/AdmFormImovel'
 import SiteContainer from '../../components/common/SiteContainer'
@@ -85,8 +83,6 @@ export default function AdmImovel() {
 
   return (
     <>
-      <HeaderAdmin />
-
       <SiteContainer>
         <p>
           <small>
@@ -107,8 +103,6 @@ export default function AdmImovel() {
         )}
         {isNew && <AdmFormImovel isNew={isNew} defaultValues={false} />}
       </main>
-
-      <Footer />
     </>
   )
 }

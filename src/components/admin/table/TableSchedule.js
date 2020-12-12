@@ -2,7 +2,6 @@ import Skeleton from 'react-loading-skeleton'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import SiteContainer from '../../common/SiteContainer'
 import IcoWhatsapp from '../../../icons/Whatsapp'
 
 const Table = styled.div`
@@ -114,77 +113,75 @@ export default function TableSchedule({ data, loaded }) {
   }
 
   return (
-    <SiteContainer>
-      <Table>
-        <HeaderRow>
-          <Cell>Cód. Imóvel</Cell>
-          <Cell>Nome</Cell>
-          <Cell>Email</Cell>
-          <Cell>Telefone</Cell>
-          {/* <Cell>Status</Cell> */}
-          <Cell>Criado em:</Cell>
-        </HeaderRow>
+    <Table>
+      <HeaderRow>
+        <Cell>Cód. Imóvel</Cell>
+        <Cell>Nome</Cell>
+        <Cell>Email</Cell>
+        <Cell>Telefone</Cell>
+        {/* <Cell>Status</Cell> */}
+        <Cell>Criado em:</Cell>
+      </HeaderRow>
 
-        {loaded &&
-          data &&
-          data.map(({ codRef, createdAt, email, nome, telefone, status }) => (
-            <Row key={codRef}>
-              <Cell className="">
-                <Link to={`/admin/imovel/cod-${codRef}`}>{codRef}</Link>
-              </Cell>
-              <Cell className="">{nome}</Cell>
-              <Cell className="">
-                <a href={`mailto:${email}`}>{email}</a>
-              </Cell>
-              <Cell className="">
-                <a
-                  href={`https://wa.me/${telToZap(telefone)}`}
-                  target="_blank"
-                  rel="nofollow"
-                  style={{ padding: '0.25em', marginRight: '0.25em' }}
-                >
-                  <IcoWhatsapp size={14} style={{ fill: 'var(--green)' }} />
-                </a>
-                <a href={`tel:${telefone}`}>{telefone}</a>
-              </Cell>
-              {/* <Cell className="">{status}</Cell> */}
-              <Cell className="">
-                {createdAt.toDate().toLocaleDateString([], {
-                  year: 'numeric',
-                  month: 'numeric',
-                  day: 'numeric',
-                })}
-              </Cell>
-            </Row>
-          ))}
-
-        {loaded && (!data || data.length == 0) && (
-          <ZeroState>Nenhuma visita agendada</ZeroState>
-        )}
-
-        {!loaded && (
-          <Row>
-            <Cell>
-              <Skeleton />
+      {loaded &&
+        data &&
+        data.map(({ codRef, createdAt, email, nome, telefone, status }) => (
+          <Row key={codRef}>
+            <Cell className="">
+              <Link to={`/admin/imovel/cod-${codRef}`}>{codRef}</Link>
             </Cell>
-            <Cell>
-              <Skeleton />
+            <Cell className="">{nome}</Cell>
+            <Cell className="">
+              <a href={`mailto:${email}`}>{email}</a>
             </Cell>
-            <Cell>
-              <Skeleton />
+            <Cell className="">
+              <a
+                href={`https://wa.me/${telToZap(telefone)}`}
+                target="_blank"
+                rel="nofollow"
+                style={{ padding: '0.25em', marginRight: '0.25em' }}
+              >
+                <IcoWhatsapp size={14} style={{ fill: 'var(--green)' }} />
+              </a>
+              <a href={`tel:${telefone}`}>{telefone}</a>
             </Cell>
-            <Cell>
-              <Skeleton />
-            </Cell>
-            <Cell>
-              <Skeleton />
-            </Cell>
-            <Cell>
-              <Skeleton />
+            {/* <Cell className="">{status}</Cell> */}
+            <Cell className="">
+              {createdAt.toDate().toLocaleDateString([], {
+                year: 'numeric',
+                month: 'numeric',
+                day: 'numeric',
+              })}
             </Cell>
           </Row>
-        )}
-      </Table>
-    </SiteContainer>
+        ))}
+
+      {loaded && (!data || data.length == 0) && (
+        <ZeroState>Nenhuma visita agendada</ZeroState>
+      )}
+
+      {!loaded && (
+        <Row>
+          <Cell>
+            <Skeleton />
+          </Cell>
+          <Cell>
+            <Skeleton />
+          </Cell>
+          <Cell>
+            <Skeleton />
+          </Cell>
+          <Cell>
+            <Skeleton />
+          </Cell>
+          <Cell>
+            <Skeleton />
+          </Cell>
+          <Cell>
+            <Skeleton />
+          </Cell>
+        </Row>
+      )}
+    </Table>
   )
 }

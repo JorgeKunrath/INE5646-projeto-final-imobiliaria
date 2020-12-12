@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
 
 import { getSchedulesForUser } from '../../services/firestore'
-import HeaderAdmin from '../../components/common/HeaderAdmin'
-import Footer from '../../components/common/Footer'
 import TableSchedule from '../../components/admin/table/TableSchedule'
 import SiteContainer from '../../components/common/SiteContainer'
 
@@ -26,21 +24,17 @@ export default function AdmReservas() {
   }, [data])
 
   return (
-    <>
-      <HeaderAdmin />
-      <SiteContainer>
-        <h1
-          style={{
-            margin: '2rem 0 0',
-            fontSize: '2rem',
-            color: 'var(--gray3)',
-          }}
-        >
-          Visitas Agendadas
-        </h1>
-      </SiteContainer>
+    <SiteContainer>
+      <h1
+        style={{
+          margin: '2rem 0 0',
+          fontSize: '2rem',
+          color: 'var(--gray3)',
+        }}
+      >
+        Visitas Agendadas
+      </h1>
       <TableSchedule data={filteredData} loaded={loaded} />
-      <Footer />
-    </>
+    </SiteContainer>
   )
 }

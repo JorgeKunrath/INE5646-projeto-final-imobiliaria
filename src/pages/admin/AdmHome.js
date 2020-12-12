@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
 
 import { getUserHouses } from '../../services/firestore'
-import HeaderAdmin from '../../components/common/HeaderAdmin'
-import Footer from '../../components/common/Footer'
+
 import TableHouses from '../../components/admin/table/TableHouses'
 import SiteContainer from '../../components/common/SiteContainer'
 
@@ -27,7 +26,6 @@ export default function AdmHome() {
 
   return (
     <>
-      <HeaderAdmin />
       <SiteContainer>
         <h1
           style={{
@@ -40,7 +38,6 @@ export default function AdmHome() {
         </h1>
       </SiteContainer>
       <TableHouses data={filteredData} loaded={loaded} />
-      <Footer />
     </>
   )
 }
