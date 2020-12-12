@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 
 import { getSchedulesForUser } from '../../services/firestore'
 import HeaderAdmin from '../../components/common/HeaderAdmin'
@@ -7,17 +7,17 @@ import TableSchedule from '../../components/admin/table/TableSchedule'
 import SiteContainer from '../../components/common/SiteContainer'
 
 export default function AdmReservas() {
-  const [loaded, setLoaded] = React.useState(false)
-  const [data, setData] = React.useState(null)
-  const [filteredData, setFilteredData] = React.useState(null)
+  const [loaded, setLoaded] = useState(false)
+  const [data, setData] = useState(null)
+  const [filteredData, setFilteredData] = useState(null)
 
   // request pro banco de dados
-  React.useEffect(() => {
+  useEffect(() => {
     getSchedulesForUser(setData)
   }, [])
 
   // trata os dados (não implementado)
-  React.useEffect(() => {
+  useEffect(() => {
     setLoaded(false)
     if (data) {
       setFilteredData(data)

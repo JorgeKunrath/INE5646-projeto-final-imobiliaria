@@ -1,4 +1,3 @@
-import React from 'react'
 import NavExample from '../components/NavExample'
 
 export default function Error404() {

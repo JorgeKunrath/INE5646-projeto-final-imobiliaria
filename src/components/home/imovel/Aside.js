@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import Card from '../../common/Card'
 import DetailsIcons from '../../common/DetailsIcons'

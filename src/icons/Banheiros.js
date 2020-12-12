@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function IcoBanheiros({ size = 20 }) {
   return (
     <svg

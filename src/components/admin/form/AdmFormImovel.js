@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { uploadOneImageToCloudStorageAndSetUrl } from '../../../services/firestore'
 import { createImovel, updateImovel } from '../../../services/firestore'
@@ -76,7 +76,7 @@ export default function AdmFormImovel({ defaultValues, isNew }) {
   }
 
   // quando mudar a seleção de imagens
-  React.useEffect(() => {
+  useEffect(() => {
     setLoading(true)
 
     // limpa o que já tinha sido selecionado
@@ -93,7 +93,7 @@ export default function AdmFormImovel({ defaultValues, isNew }) {
   }, [images])
 
   // pega cada URL em específico e agrupa num array (enviado para o db)
-  React.useEffect(() => {
+  useEffect(() => {
     if (url) {
       setUrls(() => [...urls, url])
     }

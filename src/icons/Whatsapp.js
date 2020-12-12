@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function IcoWhatsapp({ size = 24, style = {} }) {
   return (
     <svg

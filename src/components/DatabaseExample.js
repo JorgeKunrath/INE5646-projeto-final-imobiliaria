@@ -1,18 +1,18 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 
 import { createTest, readTest } from '../services/firestore'
 
 export default function DatabaseExample() {
-  const [test, setTest] = React.useState(null)
+  const [test, setTest] = useState(null)
 
-  React.useEffect(() => {
+  useEffect(() => {
     createTest({
       name: 'nome aqui 5',
       idade: 53,
     })
   }, [])
 
-  React.useEffect(() => {
+  useEffect(() => {
     readTest().then((res) => setTest(res))
   }, [])
 

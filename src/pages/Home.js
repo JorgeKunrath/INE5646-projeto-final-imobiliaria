@@ -1,5 +1,3 @@
-import React from 'react'
-
 import HeaderFront from '../components/common/HeaderFront'
 import SiteContainer from '../components/common/SiteContainer'
 import Hero from '../components/home/Hero'

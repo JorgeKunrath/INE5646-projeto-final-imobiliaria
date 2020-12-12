@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function IcoGaragem({ size = 24 }) {
   return (
     <svg
