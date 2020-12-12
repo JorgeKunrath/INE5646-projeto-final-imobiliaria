@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import AdmUserMenu from './AdmUserMenu'
 
-import IcoUser from '../../icons/User'
 import SiteContainer from './SiteContainer'
 
 const HeaderInner = styled.div`
@@ -24,12 +24,6 @@ const HeaderInner = styled.div`
     border-radius: 5px;
     box-shadow: var(--shadow);
   }
-
-  svg {
-    margin-left: 1em;
-    box-shadow: var(--shadow);
-    border-radius: 50%;
-  }
 `
 
 const LinksWrapper = styled.div`
@@ -42,7 +36,7 @@ const LinksWrapper = styled.div`
   }
 `
 
-export default function HeaderAdmin() {
+export default function HeaderAdmin({ signOut }) {
   return (
     <header style={{ background: 'var(--orange)' }}>
       <SiteContainer>
@@ -60,7 +54,7 @@ export default function HeaderAdmin() {
           <Link to="/admin/imovel/novo" className="cta">
             Adicionar Imóvel
           </Link>
-          <IcoUser size={40} />
+          <AdmUserMenu signOut={signOut} />
         </HeaderInner>
       </SiteContainer>
     </header>

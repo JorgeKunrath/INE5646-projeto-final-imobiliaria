@@ -1,5 +1,3 @@
-import React from 'react'
-
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import { useContext } from 'react'
@@ -15,22 +13,15 @@ export default function AdmLogin() {
     firebase.auth().signInWithPopup(provider)
   }
 
-  function SignOut() {
-    return (
-      currentUser && (
-        <button onClick={() => firebase.auth().signOut()}>
-          Sign Out (mover para User)
-        </button>
-      )
-    )
+  function signOut() {
+    console.log('chamou signout')
+    firebase.auth().signOut()
   }
-
   return (
     <>
       {currentUser ? (
         <>
-          <AdminRoutes />
-          <SignOut />
+          <AdminRoutes signOut={signOut} />
         </>
       ) : (
         <>

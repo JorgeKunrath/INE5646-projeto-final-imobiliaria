@@ -10,10 +10,10 @@ import AdmReservas from './AdmReservas'
 import Error404 from '../Error404'
 
 // control routing
-export default function AdminRoutes() {
+export default function AdminRoutes({ signOut }) {
   return (
     <>
-      <HeaderAdmin />
+      <HeaderAdmin signOut={signOut} />
       <Routes>
         <Route path="" element={<AdmHome />} />
         <Route path="/agendamentos" element={<AdmReservas />} />
