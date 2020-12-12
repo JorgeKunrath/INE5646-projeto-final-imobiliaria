@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Houses from './Houses'
 import Filters from './Filters'
@@ -16,10 +16,10 @@ const Section = styled.section`
 `
 
 export default function HousesWrapper() {
-  const [filteredData, setFilteredData] = React.useState([])
-  const [rawData, setRawData] = React.useState()
+  const [filteredData, setFilteredData] = useState([])
+  const [rawData, setRawData] = useState()
 
-  React.useEffect(() => {
+  useEffect(() => {
     // get data from database
     async function getData() {
       const databaseResponseJson = await getImoveisResumo()

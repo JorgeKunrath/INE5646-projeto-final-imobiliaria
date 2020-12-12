@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Slider from '@material-ui/core/Slider'
 
 import Card from '../common/Card'
@@ -29,7 +29,7 @@ export default function Filters({ rawData, filteredData, setFilteredData }) {
   const [vAluguel, setVAluguel] = useState()
 
   // every time that is made a request
-  React.useEffect(() => {
+  useEffect(() => {
     if (rawData) {
       let base = {
         dormitorios: [],
@@ -59,7 +59,7 @@ export default function Filters({ rawData, filteredData, setFilteredData }) {
   }, [rawData])
 
   // set initial ranges for each slider
-  React.useEffect(() => {
+  useEffect(() => {
     if (initialRanges) {
       setVQuartos(initialRanges['quartos'])
       setVBanheiros(initialRanges['banheiros'])
@@ -79,7 +79,7 @@ export default function Filters({ rawData, filteredData, setFilteredData }) {
   // ------------------------
   // LÓGICA
 
-  React.useEffect(() => {
+  useEffect(() => {
     console.log('=========== RODANDO O USE EFFECT DE FILTER ===========')
 
     console.table([vQuartos, vBanheiros, vGaragem, vArea, vAluguel])

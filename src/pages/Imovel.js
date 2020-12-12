@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useLocation } from 'react-router-dom'
 
@@ -23,11 +23,11 @@ const Content = styled.main`
 `
 
 export default function Imovel() {
-  const [data, setData] = React.useState(null)
+  const [data, setData] = useState(null)
   const location = useLocation()
   const currentCod = +location.pathname.replace('/imovel/cod-', '')
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function getData() {
       const data = await getImovel(currentCod)
       setData(data)

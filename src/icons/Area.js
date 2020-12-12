@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function IcoArea({ size = 20 }) {
   return (
     <svg

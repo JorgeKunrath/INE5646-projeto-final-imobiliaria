@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 import { getImovel } from '../../services/firestore'
@@ -9,15 +9,15 @@ import AdmFormImovel from '../../components/admin/form/AdmFormImovel'
 import SiteContainer from '../../components/common/SiteContainer'
 
 export default function AdmImovel() {
-  const [data, setData] = React.useState()
-  const [defaultData, setDefaultData] = React.useState()
+  const [data, setData] = useState()
+  const [defaultData, setDefaultData] = useState()
 
   const location = useLocation()
   const isNew = location.pathname.includes('novo')
   const currentCod = +location.pathname.replace('/admin/imovel/cod-', '')
 
   // make the request if is edit mode
-  React.useEffect(() => {
+  useEffect(() => {
     if (isNew) {
       setData(false)
     } else if (!isNaN(currentCod)) {
@@ -32,7 +32,7 @@ export default function AdmImovel() {
   }, [])
 
   // define form schema to be populated
-  React.useEffect(() => {
+  useEffect(() => {
     console.log({ data })
     if (data) {
       const {
