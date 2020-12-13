@@ -1,4 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import firebase from 'firebase/app'
+import 'firebase/auth'
+
+import { AuthContext } from '../../components/AuthProvider'
 
 import styled from 'styled-components'
 import IcoUser from '../../icons/User'
@@ -6,16 +10,18 @@ import IcoUser from '../../icons/User'
 const MenuWrapper = styled.div`
   position: relative;
   margin-left: 1em;
+  display: grid;
+  place-items: center;
 `
 
 const resetButton = `
-appearance: none;
-padding: 0;
-border: 0;
-font: inherit;
-background: none;
-box-shadow: none;
-color: inherit;
+  appearance: none;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  background: none;
+  box-shadow: none;
+  color: inherit;
 `
 
 const IconButton = styled.button`
@@ -26,10 +32,18 @@ const IconButton = styled.button`
   position: relative;
   z-index: 95;
 
-  svg {
+  svg,
+  img {
     display: block;
     border-radius: 50%;
     box-shadow: var(--shadow);
+  }
+
+  img {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    margin: 0;
   }
 `
 
@@ -65,7 +79,7 @@ const Modal = styled.div`
     ${resetButton}
     padding: 0.5em 1em;
     text-align: left;
-    background-color: #fdeeee;
+    background-color: #f5f5f5;
     color: #eb5757;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -86,10 +100,16 @@ const Backdrop = styled.div`
   z-index: 90;
 `
 
-export default function AdmUserMenu({ signOut }) {
+export default function AdmUserMenu() {
+  const { currentUser } = useContext(AuthContext)
   const [isOpen, setIsOpen] = useState(false)
   const [greeting, setGreeting] = useState()
 
+  function signOut() {
+    firebase.auth().signOut()
+  }
+
+  // o site é educado pô
   useEffect(() => {
     let today = new Date()
     let curHr = today.getHours()
@@ -103,20 +123,24 @@ export default function AdmUserMenu({ signOut }) {
     }
   }, [isOpen])
 
-  const userName = 'Fulano da Silva Santos'
-
   return (
     <>
       <MenuWrapper>
         <IconButton onClick={() => setIsOpen((isOpen) => !isOpen)}>
-          <IcoUser size={40} />
+          {currentUser.photoURL ? (
+            <img src={currentUser.photoURL} alt="" />
+          ) : (
+            <IcoUser size={40} />
+          )}
         </IconButton>
         {isOpen && (
           <Modal>
-            <p>
-              <span>{greeting}</span>
-              <br /> {userName}!
-            </p>
+            {currentUser.displayName && (
+              <p>
+                <span>{greeting}</span>
+                <br /> {currentUser.displayName}!
+              </p>
+            )}
             <button onClick={() => signOut()}>Sair</button>
           </Modal>
         )}

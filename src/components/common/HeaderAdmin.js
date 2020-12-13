@@ -36,7 +36,7 @@ const LinksWrapper = styled.div`
   }
 `
 
-export default function HeaderAdmin({ signOut }) {
+export default function HeaderAdmin() {
   return (
     <header style={{ background: 'var(--orange)' }}>
       <SiteContainer>
@@ -54,7 +54,7 @@ export default function HeaderAdmin({ signOut }) {
           <Link to="/admin/imovel/novo" className="cta">
             Adicionar Imóvel
           </Link>
-          <AdmUserMenu signOut={signOut} />
+          <AdmUserMenu />
         </HeaderInner>
       </SiteContainer>
     </header>

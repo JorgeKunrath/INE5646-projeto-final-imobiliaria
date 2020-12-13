@@ -12,16 +12,13 @@ export default function AdmLogin() {
     const provider = new firebase.auth.GoogleAuthProvider()
     firebase.auth().signInWithPopup(provider)
   }
+  // signOut is in AdmUserMenu.js
 
-  function signOut() {
-    console.log('chamou signout')
-    firebase.auth().signOut()
-  }
   return (
     <>
       {currentUser ? (
         <>
-          <AdminRoutes signOut={signOut} />
+          <AdminRoutes />
         </>
       ) : (
         <>
