@@ -84,6 +84,8 @@ export const createImovel = (dataPublic, dataSnippet, setLoading) => {
     setLoading(false)
   })
 
+  alert("Anúncio criado")
+
   return null
 }
 
@@ -133,6 +135,8 @@ export const updateImovel = async (
     })
 
   setLoading(false)
+
+  alert("Anúncio atualizado")
 
   return null
 }
@@ -188,7 +192,8 @@ export const submitSchedule = (object) => {
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       ...object,
     })
-    .then(() => console.log('submitSchedule: "schedule" added to Firebase'))
+    .then(() => console.log('submitSchedule: "schedule" added to Firebase'),
+      alert("Obrigado pelo interesse, entraremos em contato"))
   return null
 }
 
@@ -245,7 +250,7 @@ export const uploadOneImageToCloudStorageAndSetUrl = (image, setUrl) => {
   const uploadTask = storage.ref(`images/${user.uid}/${image.name}`).put(image)
   uploadTask.on(
     'state_changed',
-    (snapshot) => {},
+    (snapshot) => { },
     (error) => {
       console.log(error)
     },
