@@ -65,6 +65,7 @@ export const Flags = styled.div`
 export const Sliders = styled.div`
   margin-top: 1rem;
   padding: 0 0.25em;
+
   .MuiSlider-root {
     display: block;
     max-width: 98%;
@@ -72,6 +73,13 @@ export const Sliders = styled.div`
   }
   .MuiSlider-colorPrimary {
     color: var(--orange);
+  }
+  .MuiSlider-rail {
+    background-color: var(--gray4);
+  }
+  .MuiSlider-thumb:focus,
+  .MuiSlider-thumb:hover {
+    box-shadow: 0 0 0 8px rgba(242, 153, 74, 0.25);
   }
 `
 
