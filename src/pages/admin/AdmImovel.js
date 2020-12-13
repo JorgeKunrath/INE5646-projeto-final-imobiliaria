@@ -12,19 +12,20 @@ export default function AdmImovel() {
   const [defaultImages, setDefaultImages] = useState()
 
   const location = useLocation()
-  const isNew = location.pathname.includes('novo')
-  const currentCod = +location.pathname.replace('/admin/imovel/cod-', '')
+  const [isNew, setIsNew] = useState(location.pathname.includes('novo'))
+  const [currentCod, setCurrentCod] = useState(
+    +location.pathname.replace('/admin/imovel/cod-', '')
+  )
 
   // make the request if is edit mode
   useEffect(() => {
     if (isNew) {
       setData(false)
     } else if (!isNaN(currentCod)) {
-      async function getData() {
+      ;(async () => {
         const data = await getImovel(currentCod)
         setData(data)
-      }
-      getData()
+      })()
     } else {
       console.log('something is wrong with your path')
     }
@@ -32,7 +33,6 @@ export default function AdmImovel() {
 
   // define form schema to be populated
   useEffect(() => {
-    console.log({ data })
     if (data) {
       const {
         cod,
@@ -86,6 +86,8 @@ export default function AdmImovel() {
   return (
     <>
       <SiteContainer>
+        {console.log({ isNew })}
+        {console.log({ currentCod })}
         <p>
           <small>
             <Link
@@ -96,7 +98,11 @@ export default function AdmImovel() {
             </Link>
           </small>
         </p>
-        <h1>{isNew ? 'Novo Imóvel' : `Editar Imóvel ${defaultData?.cod}`}</h1>
+        <h1>
+          {isNew && isNaN(currentCod)
+            ? 'Novo Imóvel'
+            : `Editar Imóvel ${defaultData?.cod ? defaultData?.cod : ''}`}
+        </h1>
       </SiteContainer>
 
       <main>
