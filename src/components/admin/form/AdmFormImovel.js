@@ -1,12 +1,11 @@
 import { useEffect, useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+
 import { uploadOneImageToCloudStorageAndSetUrl } from '../../../services/firestore'
 import { createImovel, updateImovel } from '../../../services/firestore'
 
-// import { useContext } from 'react'
-// import { AuthContext } from './AuthProvider'
 import SiteContainer from '../../common/SiteContainer'
-
 import {
   Form,
   Fieldset,
@@ -29,35 +28,25 @@ https://fireship.io/snippets/firestore-increment-tips/
 outra alternativa: https://firebase.google.com/docs/firestore/extend-with-functions
 */
 
-/*
-
-
-
-
-TODO
-
-- adicionar demais campos --PRATICAMENTE OK
-- layoutar --OK
-- adicionar validação de autenticação --OK?
-- suporte para upload de imagem -- todo upload sendo feito, agora tem que ver como fazer pra fazer com que ela seja atrelada ao imovel --OK
-- TODO implantar modo de edição (ajustar request, inserir data real no load, etc)
-
-em algum momento melhorar o código --QUE MOMENTO EIN???
-
-
-
-*/
-
 export default function AdmFormImovel({ defaultValues, defaultImages, isNew }) {
   // --------------------
   // GLOBAL
   // --------------------
   const [loading, setLoading] = useState(false)
 
+  // redirect to admin home after new submit
+  let navigate = useNavigate()
+
+  // generate fake cod only once (acho q nem precisa mais)
+  const fakeCodOnlyOnce = useRef(true)
+
   // --------------------
   // GET IMAGE
   // --------------------
   // baseado no video https://www.google.com/search?q=upload+image+firebase+react&rlz=1C5CHFA_enBR887BR888&oq=upload+image+firebase+&aqs=chrome.2.69i57j0i457j0j0i20i263j0l5.4036j0j7&sourceid=chrome&ie=UTF-8#kpvalbx=_7Q3NX7qIEvWy5OUPkeC52A88
+
+  // prevent the cleanups to run for the firts time
+  const initialRenderForImage = useRef(true)
 
   // imagens selecionadas no navegador
   const [images, setImages] = useState([])
@@ -65,7 +54,7 @@ export default function AdmFormImovel({ defaultValues, defaultImages, isNew }) {
   // url da imagem (resposta cloud)
   const [url, setUrl] = useState()
 
-  // array de urls de imagens (manipulado)
+  // array de urls de imagens (display e inserido no banco de dados)
   const [urls, setUrls] = useState([])
 
   // pega a imagem que foi selecionada do computador e da um setImages
@@ -74,14 +63,13 @@ export default function AdmFormImovel({ defaultValues, defaultImages, isNew }) {
       setImages(e.target.files)
     }
   }
-  const initialRender = useRef(true)
 
   // quando mudar a seleção de imagens
   useEffect(() => {
     // set default
-    if (initialRender.current) {
+    if (initialRenderForImage.current) {
       setUrls(defaultImages)
-      initialRender.current = false
+      initialRenderForImage.current = false
     } else {
       /*
        **  este código só roda de fato se >images (trigger com o input de arquivo) foi realmente alterado, neste caso substitui tudo pelas novas imagens
@@ -118,18 +106,23 @@ export default function AdmFormImovel({ defaultValues, defaultImages, isNew }) {
   })
 
   const onSubmit = (data) => {
+    setLoading(true)
+
     if (!urls || urls.length === 0) {
       setError('imagens', 'Escolha uma imagem')
+      setLoading(false)
       return
     }
 
-    setLoading(true)
-
-    const newFakeCod = Math.floor(Math.random() * (9999 - 1 + 1)) + 1
-    const cod = defaultValues.cod || newFakeCod
+    let fakeCod
+    if (fakeCodOnlyOnce) {
+      fakeCod = Math.floor(Math.random() * (9999 - 1 + 1)) + 1
+      fakeCodOnlyOnce.current = false
+    }
+    const cod = defaultValues.cod || fakeCod
     console.log('submited:', { cod })
 
-    // simplify the use
+    // form data
     const {
       titulo,
       inscricaoMunicipal,
@@ -155,7 +148,7 @@ export default function AdmFormImovel({ defaultValues, defaultImages, isNew }) {
     } = data
 
     const databaseSchema = {
-      cod,
+      cod, //out form
       status,
       titulo,
       inscricaoMunicipal,
@@ -178,11 +171,11 @@ export default function AdmFormImovel({ defaultValues, defaultImages, isNew }) {
       },
       descricao,
 
-      imagens: [...urls],
+      imagens: [...urls], //out form
     }
 
     const snippetDatabaseSchema = {
-      codRef: cod,
+      codRef: cod, //out form
       status,
       titulo,
       detalhes: {
@@ -198,7 +191,7 @@ export default function AdmFormImovel({ defaultValues, defaultImages, isNew }) {
         tipo,
       },
 
-      imagem: urls[0] || '',
+      imagem: urls[0] || '', //out form
     }
 
     console.log({ databaseSchema })
@@ -207,6 +200,9 @@ export default function AdmFormImovel({ defaultValues, defaultImages, isNew }) {
     if (isNew) {
       // send data to firestore
       createImovel(databaseSchema, snippetDatabaseSchema, setLoading)
+      // redirect home
+      // previne bug de múltiplas entradas
+      navigate('/admin/')
     } else {
       updateImovel(databaseSchema, snippetDatabaseSchema, setLoading, cod)
     }
