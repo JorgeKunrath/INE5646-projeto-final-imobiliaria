@@ -9,6 +9,7 @@ import SiteContainer from '../../components/common/SiteContainer'
 export default function AdmImovel() {
   const [data, setData] = useState()
   const [defaultData, setDefaultData] = useState()
+  const [defaultImages, setDefaultImages] = useState()
 
   const location = useLocation()
   const isNew = location.pathname.includes('novo')
@@ -78,6 +79,7 @@ export default function AdmImovel() {
         descricao,
       }
       setDefaultData(formSchema)
+      setDefaultImages(data.imagens)
     }
   }, [data])
 
@@ -99,9 +101,19 @@ export default function AdmImovel() {
 
       <main>
         {data && !isNew && defaultData && (
-          <AdmFormImovel isNew={isNew} defaultValues={defaultData} />
+          <AdmFormImovel
+            isNew={isNew}
+            defaultValues={defaultData}
+            defaultImages={defaultImages}
+          />
         )}
-        {isNew && <AdmFormImovel isNew={isNew} defaultValues={false} />}
+        {isNew && (
+          <AdmFormImovel
+            isNew={isNew}
+            defaultValues={false}
+            defaultImages={false}
+          />
+        )}
       </main>
     </>
   )

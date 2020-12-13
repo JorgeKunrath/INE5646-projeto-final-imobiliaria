@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { uploadOneImageToCloudStorageAndSetUrl } from '../../../services/firestore'
 import { createImovel, updateImovel } from '../../../services/firestore'
@@ -48,7 +48,7 @@ em algum momento melhorar o código --QUE MOMENTO EIN???
 
 */
 
-export default function AdmFormImovel({ defaultValues, isNew }) {
+export default function AdmFormImovel({ defaultValues, defaultImages, isNew }) {
   // --------------------
   // GLOBAL
   // --------------------
@@ -74,21 +74,31 @@ export default function AdmFormImovel({ defaultValues, isNew }) {
       setImages(e.target.files)
     }
   }
+  const initialRender = useRef(true)
 
   // quando mudar a seleção de imagens
   useEffect(() => {
-    setLoading(true)
+    // set default
+    if (initialRender.current) {
+      setUrls(defaultImages)
+      initialRender.current = false
+    } else {
+      /*
+       **  este código só roda de fato se >images (trigger com o input de arquivo) foi realmente alterado, neste caso substitui tudo pelas novas imagens
+       */
+      setLoading(true)
 
-    // limpa o que já tinha sido selecionado
-    setUrl(null)
-    setUrls([])
+      // limpa o que já tinha sido selecionado
+      setUrl(null)
+      setUrls([])
 
-    // faz requests para cada imagem em separado
-    if (images.length > 0) {
-      const arrayFiles = Array.from(images)
-      arrayFiles.forEach((image) => {
-        uploadOneImageToCloudStorageAndSetUrl(image, setUrl)
-      })
+      // faz requests para cada imagem em separado
+      if (images.length > 0) {
+        const arrayFiles = Array.from(images)
+        arrayFiles.forEach((image) => {
+          uploadOneImageToCloudStorageAndSetUrl(image, setUrl)
+        })
+      }
     }
   }, [images])
 
@@ -103,9 +113,16 @@ export default function AdmFormImovel({ defaultValues, isNew }) {
   // --------------------
   // FORM
   // --------------------
-  const { register, handleSubmit, errors } = useForm({ defaultValues })
+  const { register, handleSubmit, errors, setError } = useForm({
+    defaultValues,
+  })
 
   const onSubmit = (data) => {
+    if (!urls || urls.length === 0) {
+      setError('imagens', 'Escolha uma imagem')
+      return
+    }
+
     setLoading(true)
 
     const newFakeCod = Math.floor(Math.random() * (9999 - 1 + 1)) + 1
