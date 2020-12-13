@@ -1,14 +1,13 @@
 import { HashRouter, Routes, Route } from 'react-router-dom'
+import styled from 'styled-components'
+
+import { AuthProvider } from './components/AuthProvider'
 
 // pages
 import Home from './pages/Home'
 import Imovel from './pages/Imovel'
 import Error404 from './pages/Error404'
-import AdmLogin from './pages/admin/AdmLogin'
-
-// import DatabaseExample from './components/DatabaseExample'
-import { AuthProvider } from './components/AuthProvider'
-import styled from 'styled-components'
+import AdmLoggedWall from './pages/admin/AdmLoggedWall'
 
 const InnerRoot = styled.div`
   display: flex;
@@ -24,10 +23,9 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="imovel/*" element={<Imovel />} />
-            <Route path="admin/*" element={<AdmLogin />} />
+            <Route path="admin/*" element={<AdmLoggedWall />} />
             <Route path="*" element={<Error404 />} />
           </Routes>
-          {/* <DatabaseExample /> */}
         </HashRouter>
       </AuthProvider>
     </InnerRoot>

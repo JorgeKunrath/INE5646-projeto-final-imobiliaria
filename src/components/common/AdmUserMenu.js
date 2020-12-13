@@ -41,6 +41,7 @@ const IconButton = styled.button`
 
   img {
     width: 40px;
+    min-width: 40px;
     height: 40px;
     padding: 0;
     margin: 0;

@@ -1,17 +1,13 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import AdmUserMenu from './AdmUserMenu'
 
 import SiteContainer from './SiteContainer'
+import AdmUserMenu from './AdmUserMenu'
 
 const HeaderInner = styled.div`
   display: flex;
   align-items: center;
   min-height: 72px;
-
-  img {
-    padding-right: 1em;
-  }
 
   .cta {
     display: block;
@@ -43,6 +39,7 @@ export default function HeaderAdmin() {
         <HeaderInner>
           <Link to="/">
             <img
+              style={{ paddingRight: '1rem' }}
               src={process.env.PUBLIC_URL + '/logo_imobiliaria.png'}
               alt="Logo Genérico"
             />
