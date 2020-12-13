@@ -125,7 +125,7 @@ export default function TableHouses({ data, loaded }) {
           <Cell className="aluguel">Aluguel</Cell>
           <Cell>Endereço</Cell>
           <Cell></Cell>
-          <Cell>Atualizado em:</Cell>
+          <Cell>Criado em:</Cell>
         </HeaderRow>
 
         {loaded &&
@@ -164,11 +164,15 @@ export default function TableHouses({ data, loaded }) {
                   <span className={status}>{status}</span>
                 </Cell>
                 <Cell>
-                  {createdAt.toDate().toLocaleDateString([], {
-                    year: 'numeric',
-                    month: 'numeric',
-                    day: 'numeric',
-                  })}
+                  {createdAt?.toDate() ? (
+                    createdAt?.toDate()?.toLocaleDateString([], {
+                      year: 'numeric',
+                      month: 'numeric',
+                      day: 'numeric',
+                    })
+                  ) : (
+                    <p>Criado agora</p>
+                  )}
                 </Cell>
               </Row>
             )
