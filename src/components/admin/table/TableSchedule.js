@@ -97,8 +97,17 @@ const ZeroState = styled.div`
 export default function TableSchedule({ data, loaded }) {
   console.log({ data })
 
+  /*
+    TODO
+
+    HARDCODED
+    Código funciona exclusivamente em ddd 48 e as vezes nem funciona não
+  */
   function telToZap(tel) {
     let zap = tel.trim().replace(/[\(\)\-\s  *]/gi, '')
+    if (zap[0] === '0') {
+      zap = zap.substring(1) // remove first char (0)
+    }
     if (zap.length == 8) {
       zap = '9' + zap
     }
@@ -108,7 +117,6 @@ export default function TableSchedule({ data, loaded }) {
     if (zap.length == 11) {
       zap = '55' + zap
     }
-    console.log({ zap })
     return zap
   }
 
