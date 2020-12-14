@@ -95,8 +95,6 @@ export default function ScheduleButton({ userUidRef, cod }) {
       status: 'aberto',
     }
 
-    console.log({ dbSchema })
-
     submitSchedule(dbSchema)
   }
 

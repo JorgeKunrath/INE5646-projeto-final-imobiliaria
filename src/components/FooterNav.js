@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-export default function NavExample() {
+export default function FooterNav() {
   return (
     <nav>
       <Link to="/">Home</Link>

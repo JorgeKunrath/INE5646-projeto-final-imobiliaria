@@ -31,7 +31,6 @@ export default function Imovel() {
     async function getData() {
       const data = await getImovel(currentCod)
       setData(data)
-      setTimeout(() => console.log(data), 0)
     }
     getData()
   }, [])

@@ -120,7 +120,6 @@ export default function AdmFormImovel({ defaultValues, defaultImages, isNew }) {
       fakeCodOnlyOnce.current = false
     }
     const cod = defaultValues.cod || fakeCod
-    console.log('submited:', { cod })
 
     // form data
     const {
@@ -193,9 +192,6 @@ export default function AdmFormImovel({ defaultValues, defaultImages, isNew }) {
 
       imagem: urls[0] || '', //out form
     }
-
-    console.log({ databaseSchema })
-    console.log({ snippetDatabaseSchema })
 
     if (isNew) {
       // send data to firestore

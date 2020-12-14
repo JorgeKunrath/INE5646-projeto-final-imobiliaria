@@ -23,28 +23,6 @@ export const app = firebase.initializeApp(firebaseConfig)
 
 export const db = firebase.firestore()
 
-// exemplo
-export const createTest = (object) => {
-  db.collection('test')
-    .add({
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      randomNumber: Math.random(),
-      ...object,
-    })
-    .then(() => console.log('createTest: collection added to Firebase'))
-  return null
-}
-
-// exemplo
-export const readTest = async () => {
-  const snapshot = await db.collection('test').get()
-  const data = snapshot.docs.map((doc) => doc.data())
-  return data
-}
-
-// ==============
-/* real things */
-
 // create a new entry in imoveis and imoveis_resumo
 export const createImovel = (dataPublic, dataSnippet, setLoading) => {
   // Get a new write batch
@@ -52,10 +30,9 @@ export const createImovel = (dataPublic, dataSnippet, setLoading) => {
 
   // Get user
   let user = firebase.auth().currentUser
-  console.log('user.uid', user.uid)
 
   // -----
-  // Set the value in usuarios > imoveis
+  // Set the value in usuarios/userId/imoveis/doc
   let usuarios_imoveis_ref = db
     .collection('usuarios')
     .doc(user.uid)
@@ -68,7 +45,7 @@ export const createImovel = (dataPublic, dataSnippet, setLoading) => {
   })
 
   // -----
-  // Set the value in imovel_resumo
+  // Set the value in imovel_resumo/doc
   let snippet_imovel_ref = db.collection('imoveis_resumo').doc()
   batch.set(snippet_imovel_ref, {
     userUidRef: user.uid,
@@ -77,14 +54,15 @@ export const createImovel = (dataPublic, dataSnippet, setLoading) => {
   })
 
   // Commit the batch
-  batch.commit().then(function () {
-    console.log(
-      'submitImovel: created usuarios/userUid/imoveis and snippet_imovel'
-    )
-    setLoading(false)
-  })
-
-  alert("Anúncio criado")
+  batch
+    .commit()
+    .then(function () {
+      alert('Anúncio criado')
+      setLoading(false)
+    })
+    .catch(function (error) {
+      console.log('ops... ', error)
+    })
 
   return null
 }
@@ -136,36 +114,34 @@ export const updateImovel = async (
 
   setLoading(false)
 
-  alert("Anúncio atualizado")
+  alert('Anúncio atualizado')
 
   return null
 }
 
 // request snippet imoveis
 export const getImoveisResumo = async () => {
-  console.log('Firebase: getImoveisResumo')
-
   const snapshotDisponivel = await db
     .collection('imoveis_resumo')
     .where('status', '==', 'disponível')
     .orderBy('createdAt', 'desc')
     .get()
-  const data = snapshotDisponivel.docs.map((doc) => doc.data())
+  const imoveisDisponiveis = snapshotDisponivel.docs.map((doc) => doc.data())
 
   const snapshotReservado = await db
     .collection('imoveis_resumo')
     .where('status', '==', 'reservado')
     .orderBy('createdAt', 'desc')
     .get()
-  const data2 = snapshotReservado.docs.map((doc) => doc.data())
+  const imoveisReservados = snapshotReservado.docs.map((doc) => doc.data())
 
-  return [...data, ...data2]
+  return [...imoveisDisponiveis, ...imoveisReservados]
 }
 
 // request imovel
 export const getImovel = async (cod) => {
   let data
-  // 1. busca todas as coleções chamada imoveis
+  // 1. busca todas as coleções chamada "imoveis"
   // 2. seleciona os campos desejados
   const query = await db
     .collectionGroup('imoveis')
@@ -179,7 +155,7 @@ export const getImovel = async (cod) => {
       })
     })
     .catch(function (error) {
-      console.log('Error getting documents: ', error)
+      console.log('ops... ', error)
     })
 
   return data
@@ -192,8 +168,11 @@ export const submitSchedule = (object) => {
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       ...object,
     })
-    .then(() => console.log('submitSchedule: "schedule" added to Firebase'),
-      alert("Obrigado pelo interesse, entraremos em contato"))
+    .then(() => alert('Obrigado pelo interesse, entraremos em contato'))
+    .catch(function (error) {
+      console.log('ops... ', error)
+    })
+
   return null
 }
 
@@ -209,7 +188,9 @@ export const getUserHouses = async (setData) => {
     .orderBy('createdAt', 'desc')
     .get()
   const data = snapshot.docs.map((doc) => doc.data())
+
   setData(data)
+
   return data
 }
 
@@ -224,7 +205,9 @@ export const getSchedulesForUser = async (setData) => {
     .orderBy('createdAt', 'desc')
     .get()
   const data = snapshot.docs.map((doc) => doc.data())
+
   setData(data)
+
   return data
 }
 
@@ -239,20 +222,17 @@ export const storage = firebase.storage()
 // BUG FIX TODO
 // UPLOAD ASSIM ESTÁ SOBRESCREVENDO A IMAGEM SE ELA TEM O MESMO NOME
 // se pá usar algum hash adicional no nome, n sei bem
-// ou pelo menos ter uma pasta para cada usuário
+// ou pelo menos ter uma pasta para cada usuário (👈 feito assim)
 export const uploadOneImageToCloudStorageAndSetUrl = (image, setUrl) => {
-  let dbImageUrl
-
   // Get user
   let user = firebase.auth().currentUser
-  console.log('user.uid', user.uid)
 
   const uploadTask = storage.ref(`images/${user.uid}/${image.name}`).put(image)
   uploadTask.on(
     'state_changed',
-    (snapshot) => { },
+    (snapshot) => {},
     (error) => {
-      console.log(error)
+      console.log('ops... ', error)
     },
     () => {
       storage
@@ -262,6 +242,9 @@ export const uploadOneImageToCloudStorageAndSetUrl = (image, setUrl) => {
         .then((url) => {
           console.log('Imagem salva com sucesso:', url)
           setUrl(url)
+        })
+        .catch(function (error) {
+          console.log('ops... ', error)
         })
     }
   )

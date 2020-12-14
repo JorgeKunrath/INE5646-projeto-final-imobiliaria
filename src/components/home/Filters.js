@@ -39,7 +39,6 @@ export default function Filters({ rawData, filteredData, setFilteredData }) {
         aluguel: [],
       }
       rawData.forEach((house) => {
-        console.log({ house })
         base.dormitorios.push(house.detalhes.dormitorios)
         base.banheiros.push(house.detalhes.banheiros)
         base.vagas.push(house.detalhes.vagas)
@@ -80,25 +79,20 @@ export default function Filters({ rawData, filteredData, setFilteredData }) {
   // LÓGICA
 
   useEffect(() => {
-    console.log('=========== RODANDO O USE EFFECT DE FILTER ===========')
+    console.log('Filtrando imóveis...')
 
     console.table([vQuartos, vBanheiros, vGaragem, vArea, vAluguel])
 
     if (filteredData && initialRanges) {
-      console.log('-----------')
-      console.log({ filteredData })
-      console.log('-----------')
       // manipulate
       let newData = rawData.filter((house) => {
-        console.log({ house })
-
-        console.table([
-          +house.detalhes.dormitorios,
-          +house.detalhes.banheiros,
-          +house.detalhes.vagas,
-          +house.detalhes.area,
-          +house.aluguel,
-        ])
+        // console.table([
+        //   +house.detalhes.dormitorios,
+        //   +house.detalhes.banheiros,
+        //   +house.detalhes.vagas,
+        //   +house.detalhes.area,
+        //   +house.aluguel,
+        // ])
 
         return (
           +house.detalhes.dormitorios >= vQuartos[0] &&
@@ -113,8 +107,7 @@ export default function Filters({ rawData, filteredData, setFilteredData }) {
           +house.aluguel <= vAluguel[1]
         )
       })
-      console.log('RESULTADO -----------')
-      console.log({ newData })
+      console.log('Resultado:', { newData })
 
       // set
       setFilteredData(newData)

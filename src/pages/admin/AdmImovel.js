@@ -27,7 +27,7 @@ export default function AdmImovel() {
         setData(data)
       })()
     } else {
-      console.log('something is wrong with your path')
+      console.log('Algo de errado com o caminho na url')
     }
   }, [])
 
@@ -86,8 +86,6 @@ export default function AdmImovel() {
   return (
     <>
       <SiteContainer>
-        {console.log({ isNew })}
-        {console.log({ currentCod })}
         <p>
           <small>
             <Link
