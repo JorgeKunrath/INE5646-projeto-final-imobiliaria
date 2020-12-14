@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import SiteContainer from '../common/SiteContainer'
 
 const Div = styled.div`
-  min-height: 45vh;
+  min-height: 45vmin;
   background: #f2994a;
   display: flex;
   justify-content: center;
@@ -15,7 +15,8 @@ const Div = styled.div`
 
   h1 {
     margin-top: -72px;
-    padding: 1em 0;
+    padding: 3em 0;
+    font-size: clamp(24px, 5vw, 60px);
   }
 `
 
