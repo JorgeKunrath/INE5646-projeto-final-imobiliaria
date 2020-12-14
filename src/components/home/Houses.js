@@ -30,8 +30,14 @@ const HouseCard = styled(Card)`
   }
 
   transition: box-shadow 0.3s ease;
+  img {
+    transition: transform 0.4s ease;
+  }
   :hover {
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1), 0 0 8px rgba(0, 0, 0, 0.1);
+    img {
+      transform: scale(1.07);
+    }
   }
   :focus-within {
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1), 0 0 8px rgba(0, 0, 0, 0.1),
@@ -42,6 +48,7 @@ const HouseCard = styled(Card)`
 const Picture = styled.picture`
   position: relative;
   padding-top: calc((9 / 16) * 100%);
+  overflow: hidden;
 
   img {
     position: absolute;
