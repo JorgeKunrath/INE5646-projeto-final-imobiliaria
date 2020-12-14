@@ -20,6 +20,15 @@ const HeaderInner = styled.div`
     border-radius: 5px;
     box-shadow: var(--shadow);
   }
+
+  @media (max-width: 600px) {
+    .hideMob {
+      display: none;
+    }
+    .logo {
+      margin-right: auto;
+    }
+  }
 `
 
 const LinksWrapper = styled.div`
@@ -37,18 +46,18 @@ export default function HeaderAdmin() {
     <header style={{ background: 'var(--orange)' }}>
       <SiteContainer>
         <HeaderInner>
-          <Link to="/">
+          <Link to="/" className="logo">
             <img
               style={{ paddingRight: '1rem' }}
               src={process.env.PUBLIC_URL + '/logo_imobiliaria.png'}
               alt="Logo Genérico"
             />
           </Link>
-          <LinksWrapper>
+          <LinksWrapper className="hideMob">
             <Link to="/admin">Imóveis</Link>
             <Link to="/admin/agendamentos">Agendamentos</Link>
           </LinksWrapper>
-          <Link to="/admin/imovel/novo" className="cta">
+          <Link to="/admin/imovel/novo" className="cta hideMob">
             Adicionar Imóvel
           </Link>
           <AdmUserMenu />

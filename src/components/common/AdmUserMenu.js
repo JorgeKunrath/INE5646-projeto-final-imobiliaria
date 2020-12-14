@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
+import { Link } from 'react-router-dom'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 
@@ -58,7 +59,7 @@ const Modal = styled.div`
   box-shadow: var(--shadow);
   z-index: 99;
   overflow: hidden;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 
   display: flex;
   flex-direction: column;
@@ -99,6 +100,24 @@ const Backdrop = styled.div`
   width: 100%;
   height: 100%;
   z-index: 90;
+`
+
+const LinksWrapper = styled.div`
+  @media (min-width: 600px) {
+    display: none;
+  }
+
+  display: flex;
+  flex-flow: column;
+  padding: 0 1em 0.75em;
+  border-top: 1px solid var(--gray5);
+
+  a {
+    /* margin-right: 1em; */
+    color: var(--orange);
+    text-decoration: none;
+    padding: 0.5rem 0;
+  }
 `
 
 export default function AdmUserMenu() {
@@ -142,6 +161,11 @@ export default function AdmUserMenu() {
                 <br /> {currentUser.displayName}!
               </p>
             )}
+            <LinksWrapper>
+              <Link to="/admin">Imóveis</Link>
+              <Link to="/admin/agendamentos">Agendamentos</Link>
+              <Link to="/admin/imovel/novo">Adicionar Imóvel</Link>
+            </LinksWrapper>
             <button onClick={() => signOut()}>Sair</button>
           </Modal>
         )}
