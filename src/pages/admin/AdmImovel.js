@@ -96,7 +96,7 @@ export default function AdmImovel() {
             </Link>
           </small>
         </p>
-        <h1>
+        <h1 style={{ maxWidth: '80%' }}>
           {isNew && isNaN(currentCod)
             ? 'Novo Imóvel'
             : `Editar Imóvel ${defaultData?.cod ? defaultData?.cod : ''}`}

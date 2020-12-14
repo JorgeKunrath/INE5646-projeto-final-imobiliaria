@@ -6,6 +6,10 @@ export const Form = styled.form`
   position: relative;
   margin: 2em 0;
 
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+
   label {
     display: flex;
     flex-flow: column;
@@ -43,6 +47,11 @@ export const Fieldset = styled.div`
   grid-gap: 1em;
   padding: 0;
   max-width: 100%;
+
+  @media (max-width: 600px) {
+    grid-template-columns: ${({ inputCount }) =>
+      `repeat(${inputCount == 3 ? '1' : inputCount / 2}, 1fr)`};
+  }
 `
 
 export const InputStyled = styled.input`
@@ -90,11 +99,20 @@ export const Button = styled.button`
 
 export const LeftCol = styled.div`
   width: 60%;
+
+  @media (max-width: 600px) {
+    width: 100%;
+  }
 `
 
 export const RigthCol = styled.div`
   width: 40%;
   padding-left: 2rem;
+
+  @media (max-width: 600px) {
+    width: 100%;
+    padding-left: 0;
+  }
 `
 export const ImagesUploaded = styled.div`
   border: 2px solid var(--gray5);
